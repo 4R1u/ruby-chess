@@ -2,10 +2,9 @@
 
 # A chess piece.
 class Piece
-  def initialize(char = '♙', letter = '', dark: true)
+  def initialize(char = '♙', letter = '')
     @char = char
     @letter = letter
-    @dark = dark
   end
 
   def valid_move?(source, destination)
