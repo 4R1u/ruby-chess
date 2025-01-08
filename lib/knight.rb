@@ -5,6 +5,6 @@ require_relative 'piece'
 # Knight
 class Knight < Piece
   def initialize(black: false)
-    super(black ? '♞' : '♘', '')
+    super(black ? '♞' : '♘', 'N')
   end
 end

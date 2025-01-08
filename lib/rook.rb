@@ -7,7 +7,7 @@ class Rook < Piece
   attr_accessor :moven
 
   def initialize(black: false)
-    super(black ? '♜' : '♖', '')
+    super(black ? '♜' : '♖', 'R')
     @moven = false
   end
 end
