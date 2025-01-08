@@ -5,6 +5,6 @@ require_relative 'piece'
 # Queen
 class Queen < Piece
   def initialize(black: false)
-    super(black ? '♛' : '♕', 'Q')
+    super(black ? '♛' : '♕', 'Q', black: black)
   end
 end

@@ -2,10 +2,11 @@
 
 # A chess piece.
 class Piece
-  attr_reader :char, :letter
+  attr_reader :char, :letter, :black
 
-  def initialize(char = '♙', letter = '')
+  def initialize(char = '♙', letter = '', black: false)
     @char = char
     @letter = letter
+    @black = black
   end
 end
