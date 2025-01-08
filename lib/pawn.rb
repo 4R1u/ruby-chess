@@ -2,8 +2,7 @@
 
 require_relative 'piece'
 
-# Pawn (should implement normal moves,
-# as well as moving two squares at the beginning, capturing and enpassant)
+# Pawn
 class Pawn < Piece
   attr_accessor :moven
 
