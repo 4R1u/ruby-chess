@@ -26,4 +26,8 @@ class Board
   def board
     @board.map { |rank| rank.map(&:itself) }
   end
+
+  def place_piece(coords, piece)
+    @board[coords[0]][coords[1]].piece = piece
+  end
 end
