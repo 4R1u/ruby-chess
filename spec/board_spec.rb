@@ -19,11 +19,15 @@ describe Board do
   describe '#remove_piece' do
     before do
       board.place_piece([0, 4], King.new)
-      board.remove_piece([0, 4])
     end
 
     it 'removes piece' do
+      board.remove_piece([0, 4])
       expect(board.board[0][4].piece).to be_nil
+    end
+
+    it 'returns removed piece' do
+      expect(board.remove_piece([0, 4])).to be_a(King)
     end
   end
 end

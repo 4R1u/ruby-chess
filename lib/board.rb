@@ -32,6 +32,8 @@ class Board
   end
 
   def remove_piece(coords)
+    piece = @board[coords[0]][coords[1]].piece
     @board[coords[0]][coords[1]].piece = nil
+    piece
   end
 end
