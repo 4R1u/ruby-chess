@@ -15,4 +15,15 @@ describe Board do
       expect(board.board[0][4].piece).to eq(king)
     end
   end
+
+  describe '#remove_piece' do
+    before do
+      board.place_piece([0, 4], King.new)
+      board.remove_piece([0, 4])
+    end
+
+    it 'removes piece' do
+      expect(board.board[0][4].piece).to be_nil
+    end
+  end
 end
