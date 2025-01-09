@@ -30,4 +30,20 @@ describe Board do
       expect(board.remove_piece([0, 4])).to be_a(King)
     end
   end
+
+  describe '#move_piece' do
+    king = King.new
+    before do
+      board.place_piece([0, 0], king)
+      board.move_piece([0, 0], [0, 4])
+    end
+
+    it 'piece is at destination' do
+      expect(board.board[0][4].piece).to eq(king)
+    end
+
+    it 'source square is empty' do
+      expect(board.board[0][0].piece).to be_nil
+    end
+  end
 end

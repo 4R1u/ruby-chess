@@ -36,4 +36,8 @@ class Board
     @board[coords[0]][coords[1]].piece = nil
     piece
   end
+
+  def move_piece(src, dst)
+    place_piece(dst, remove_piece(src))
+  end
 end
