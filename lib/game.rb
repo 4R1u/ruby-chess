@@ -21,13 +21,9 @@ class Game
   end
 
   def move(str)
-    dst = [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
-    src = [dst[0] + 1, dst[1]]
-    if @board.board[src[0]][src[1]].piece.is_a?(Pawn)
-      @board.move_piece(src, dst)
-    elsif @board.board[src[0] + 1][src[1]].piece.is_a?(Pawn)
-      @board.move_piece([src[0] + 1, src[1]], dst)
-    end
+    dst = find_destination(str)
+    src = find_source_pawn(dst)
+    @board.move_piece(src, dst) if src && dst
   end
 
   private
@@ -56,5 +52,16 @@ class Game
       @board.place_piece([0, index], back_row[index].new(black: true))
       @board.place_piece([1, index], Pawn.new(black: true))
     end
+  end
+
+  def find_destination(str)
+    [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
+  end
+
+  def find_source_pawn(dst)
+    src = [dst[0] + 1, dst[1]]
+    return src if @board.board[src[0]][src[1]].piece.is_a?(Pawn)
+
+    [src[0] + 1, src[1]] if @board.board[src[0] + 1][src[1]].piece.is_a?(Pawn)
   end
 end
