@@ -23,7 +23,11 @@ class Game
   def move(str)
     dst = [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
     src = [dst[0] + 1, dst[1]]
-    @board.move_piece(src, dst) if @board.board[src[0]][src[1]].piece.is_a?(Pawn)
+    if @board.board[src[0]][src[1]].piece.is_a?(Pawn)
+      @board.move_piece(src, dst)
+    elsif @board.board[src[0] + 1][src[1]].piece.is_a?(Pawn)
+      @board.move_piece([src[0] + 1, src[1]], dst)
+    end
   end
 
   private
