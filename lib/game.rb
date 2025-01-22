@@ -13,17 +13,21 @@ require_relative 'board'
 # A hopefully near-blackbox match of chess
 # but which exposes the board for easy access.
 class Game
-  attr_reader :board
+  attr_reader :board, :current_player
 
   def initialize
     @board = Board.new
     setup_board
+    @current_player = 'white'
   end
 
   def move(str)
     dst = find_destination(str)
     src = find_source_pawn(dst)
-    @board.move_piece(src, dst) if src && dst
+    return unless src && dst
+
+    @board.move_piece(src, dst)
+    @current_player = %w[white black].find { |player| player != @current_player }
   end
 
   private

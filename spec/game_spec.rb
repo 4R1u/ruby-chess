@@ -18,6 +18,10 @@ describe Game do
         it 'source is empty' do
           expect(game.board.board[6][4].piece).to be_nil
         end
+
+        it 'current player has become black' do
+          expect(game.current_player).to eq('black')
+        end
       end
 
       context 'white pawn moves forward two squares' do
@@ -33,6 +37,10 @@ describe Game do
           it 'source is empty' do
             expect(game.board.board[6][4].piece).to be_nil
           end
+
+          it 'current player has become black' do
+            expect(game.current_player).to eq('black')
+          end
         end
       end
 
@@ -44,6 +52,10 @@ describe Game do
         it 'pawn is at source' do
           expect(game.board.board[6][4].piece).to be_a(Pawn)
         end
+
+        it 'current player remains white' do
+          expect(game.current_player).to eq('white')
+        end
       end
 
       context 'white pawn tries to move forward four squares' do
@@ -53,6 +65,10 @@ describe Game do
 
         it 'pawn is at source' do
           expect(game.board.board[6][4].piece).to be_a(Pawn)
+        end
+
+        it 'current player remains white' do
+          expect(game.current_player).to eq('white')
         end
       end
     end
