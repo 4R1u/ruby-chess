@@ -60,8 +60,16 @@ class Game
 
   def find_source_pawn(dst)
     src = [dst[0] + 1, dst[1]]
-    return src if @board.board[src[0]][src[1]].piece.is_a?(Pawn)
+    return src if find_pawn_source_one_square_behind(src)
 
-    [src[0] + 1, src[1]] if @board.board[src[0] + 1][src[1]].piece.is_a?(Pawn)
+    [src[0] + 1, src[1]] if find_pawn_source_two_squares_behind(src)
+  end
+
+  def find_pawn_source_one_square_behind(src)
+    @board.board[src[0]][src[1]].piece.is_a?(Pawn)
+  end
+
+  def find_pawn_source_two_squares_behind(src)
+    @board.board[src[0] + 1][src[1]].piece.is_a?(Pawn)
   end
 end
