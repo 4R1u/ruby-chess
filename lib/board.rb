@@ -15,6 +15,14 @@ class Board
     end
   end
 
+  def info_at(src, key, value = nil)
+    if value.nil?
+      @board[src[0]][src[1]].piece.info[key]
+    else
+      @board[src[0]][src[1]].piece.info[key] = value
+    end
+  end
+
   def output
     @board.each do |rank|
       rank.each(&:output)

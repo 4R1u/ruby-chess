@@ -26,6 +26,7 @@ class Game
     src = find_source_pawn(dst)
     return unless src && dst
 
+    @board.info_at(src, :moven?, true)
     @board.move_piece(src, dst)
     @current_player = %w[white black].find { |player| player != @current_player }
   end
@@ -74,6 +75,9 @@ class Game
   end
 
   def find_pawn_source_two_squares_behind(src)
-    @board.board[src[0] + (@current_player == 'white' ? 1 : -1)][src[1]].piece.is_a?(Pawn)
+    src2 = @board.board[src[0] + (@current_player == 'white' ? 1 : -1)][src[1]].piece
+    return false unless src2.is_a?(Pawn)
+
+    src2.info[:moven?].nil?
   end
 end
