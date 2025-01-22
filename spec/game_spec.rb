@@ -45,6 +45,16 @@ describe Game do
           expect(game.board.board[6][4].piece).to be_a(Pawn)
         end
       end
+
+      context 'white pawn tries to move forward four squares' do
+        before do
+          game.move('e6')
+        end
+
+        it 'pawn is at source' do
+          expect(game.board.board[6][4].piece).to be_a(Pawn)
+        end
+      end
     end
   end
 end
