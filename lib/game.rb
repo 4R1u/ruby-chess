@@ -64,23 +64,24 @@ class Game
   end
 
   def find_source_pawn(dst)
-    src = [dst[0] + (@current_player == 'white' ? 1 : -1), dst[1]]
-    return src if find_pawn_source_one_square_behind(src)
-
-    return unless find_pawn_source_two_squares_behind(src)
-
-    [src[0] + (@current_player == 'white' ? 1 : -1),
-     src[1]]
+    src = find_pawn_source_one_square_behind(dst) ||
+          find_pawn_source_two_squares_behind(dst)
+    src if src
   end
 
-  def find_pawn_source_one_square_behind(src)
-    @board.board[src[0]][src[1]].piece.is_a?(Pawn)
+  def find_pawn_source_one_square_behind(dst)
+    src = [dst[0] + (current_player == 'white' ? 1 : -1), dst[1]]
+    piece = @board.board[src[0]][src[1]].piece
+    return nil if piece.nil? || piece.black == (@current_player == 'white')
+
+    src if piece.is_a?(Pawn)
   end
 
-  def find_pawn_source_two_squares_behind(src)
-    src2 = @board.board[src[0] + (@current_player == 'white' ? 1 : -1)][src[1]].piece
-    return false unless src2.is_a?(Pawn)
+  def find_pawn_source_two_squares_behind(dst)
+    src = [dst[0] + (@current_player == 'white' ? 2 : -2), dst[1]]
+    piece = @board.board[src[0]][src[1]].piece
 
-    src2.info[:moven?].nil?
+    src if piece.is_a?(Pawn) && !piece.info[:moven?] &&
+           (piece.black != (@current_player == 'white'))
   end
 end
