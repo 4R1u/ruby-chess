@@ -142,6 +142,25 @@ describe Game do
           expect(game.current_player).to eq('white')
         end
       end
+
+      context 'testing capture' do
+        context 'white pawn captures black pawn normally' do
+          context 'using the x abbreviation' do
+            before do
+              game.move('d4')
+              game.move('e5')
+              game.move('dxe5')
+            end
+
+            it 'pawn at destination is white' do
+              expect(game.board.board[3][4].piece.black).to eq(false)
+            end
+            it 'source is empty' do
+              expect(game.board.board[4][3].piece).to be_nil
+            end
+          end
+        end
+      end
     end
   end
 end
