@@ -77,6 +77,44 @@ describe Game do
         end
       end
 
+      context 'black pawn moves forward two squares' do
+        context 'black pawn has not moven' do
+          before do
+            game.move('e3')
+            game.move('e5')
+          end
+
+          it 'pawn is at destination' do
+            expect(game.board.board[3][4].piece).to be_a(Pawn)
+          end
+
+          it 'source is empty' do
+            expect(game.board.board[1][4].piece).to be_nil
+          end
+
+          it 'current player has become white' do
+            expect(game.current_player).to eq('white')
+          end
+        end
+
+        context 'black pawn has moven' do
+          before do
+            game.move('e3')
+            game.move('e6')
+            game.move('d3')
+            game.move('e4')
+          end
+
+          it 'pawn is at source' do
+            expect(game.board.board[2][4].piece).to be_a(Pawn)
+          end
+
+          it 'current player is still black' do
+            expect(game.current_player).to eq('black')
+          end
+        end
+      end
+
       context 'white pawn tries to move forward three squares' do
         before do
           game.move('e5')

@@ -67,7 +67,10 @@ class Game
     src = [dst[0] + (@current_player == 'white' ? 1 : -1), dst[1]]
     return src if find_pawn_source_one_square_behind(src)
 
-    [src[0] + 1, src[1]] if find_pawn_source_two_squares_behind(src)
+    return unless find_pawn_source_two_squares_behind(src)
+
+    [src[0] + (@current_player == 'white' ? 1 : -1),
+     src[1]]
   end
 
   def find_pawn_source_one_square_behind(src)
