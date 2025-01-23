@@ -16,10 +16,13 @@ class Board
   end
 
   def info_at(src, key, value = nil)
+    piece = @board[src[0]][src[1]].piece
+    return nil if piece.nil?
+
     if value.nil?
-      @board[src[0]][src[1]].piece.info[key]
+      piece.info[key]
     else
-      @board[src[0]][src[1]].piece.info[key] = value
+      piece.info[key] = value
     end
   end
 
