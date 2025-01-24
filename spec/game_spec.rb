@@ -145,10 +145,13 @@ describe Game do
 
       context 'testing capture' do
         context 'white pawn captures black pawn normally' do
+          before do
+            game.move('d4')
+            game.move('e5')
+          end
+
           context 'using the x abbreviation' do
             before do
-              game.move('d4')
-              game.move('e5')
               game.move('dxe5')
             end
 
@@ -162,8 +165,6 @@ describe Game do
 
           context 'without the x abbreviation' do
             before do
-              game.move('d4')
-              game.move('e5')
               game.move('de5')
             end
 
