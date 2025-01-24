@@ -65,7 +65,7 @@ class Game
 
   def find_source_pawn(dst, str)
     src = if str.length > 2
-            find_capturing_pawn(dst, str[0].ord - 'a'.ord)
+            find_capturing_pawn(dst, str[0].ord - 'a'.ord) if ('a'..'h').cover?(str[0])
           else
             find_pawn_source_one_square_behind(dst) ||
               find_pawn_source_two_squares_behind(dst)

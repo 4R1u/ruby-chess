@@ -175,6 +175,19 @@ describe Game do
               expect(game.board.board[4][3].piece).to be_nil
             end
           end
+
+          context 'using the x abbreviation wrongly' do
+            before do
+              game.move('xde5')
+            end
+
+            it 'pawn at destination is black' do
+              expect(game.board.board[3][4].piece.black).to eq(true)
+            end
+            it 'pawn at source is white' do
+              expect(game.board.board[4][3].piece.black).to eq(false)
+            end
+          end
         end
       end
     end
