@@ -254,6 +254,24 @@ describe Game do
             expect(game.current_player).to eq('white')
           end
         end
+        context 'black pawn tries to capture black pawn' do
+          before do
+            game.move('e3')
+            game.move('e6')
+            game.move('e4')
+            game.move('fxe6')
+          end
+
+          it 'pawn at source is black' do
+            expect(game.board.board[1][5].piece.black).to eq(true)
+          end
+          it 'pawn at destination is black' do
+            expect(game.board.board[2][4].piece.black).to eq(true)
+          end
+          it 'current player is still black' do
+            expect(game.current_player).to eq('black')
+          end
+        end
       end
     end
   end
