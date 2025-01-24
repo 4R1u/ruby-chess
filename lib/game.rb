@@ -23,7 +23,7 @@ class Game
 
   def move(str)
     dst = find_destination(str)
-    src = find_source_pawn(dst, str)
+    src = find_source_pawn(dst, str) if dst
     return unless src && dst
 
     @board.info_at(src, :moven?, true)
@@ -60,7 +60,9 @@ class Game
   end
 
   def find_destination(str)
-    [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
+    dst = [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
+    dst if @board.board[dst[0]][dst[1]].piece&.black !=
+           (@current_player == 'black')
   end
 
   def find_source_pawn(dst, str)
