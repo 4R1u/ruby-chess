@@ -343,6 +343,20 @@ describe Game do
             end
           end
         end
+
+        context 'white pawn tries to move into empty square with x abbreviation' do
+          before do
+            game.move('exe3')
+          end
+
+          it 'piece at source is pawn' do
+            expect(game.board.board[6][4].piece).to be_a(Pawn)
+          end
+
+          it 'destination is empty' do
+            expect(game.board.board[5][4].piece).to be_nil
+          end
+        end
       end
     end
   end
