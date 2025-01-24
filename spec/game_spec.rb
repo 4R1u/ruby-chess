@@ -254,6 +254,7 @@ describe Game do
             expect(game.current_player).to eq('white')
           end
         end
+
         context 'black pawn tries to capture black pawn' do
           before do
             game.move('e3')
