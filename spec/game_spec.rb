@@ -189,6 +189,53 @@ describe Game do
             end
           end
         end
+
+        context 'black pawn captures white pawn' do
+          before do
+            game.move('d3')
+            game.move('e5')
+            game.move('d4')
+          end
+
+          context 'using the x abbreviation' do
+            before do
+              game.move('exd4')
+            end
+
+            it 'pawn at destination is black' do
+              expect(game.board.board[4][3].piece.black).to eq(true)
+            end
+            it 'source is empty' do
+              expect(game.board.board[3][4].piece).to be_nil
+            end
+          end
+
+          context 'without the x abbreviation' do
+            before do
+              game.move('ed4')
+            end
+
+            it 'pawn at destination is black' do
+              expect(game.board.board[4][3].piece.black).to eq(true)
+            end
+            it 'source is empty' do
+              expect(game.board.board[3][4].piece).to be_nil
+            end
+          end
+
+          context 'using the x abbreviation wrongly' do
+            before do
+              game.move('xed4')
+            end
+
+            it 'pawn at destination is white' do
+              expect(game.board.board[4][3].piece.black).to eq(false)
+            end
+            it 'pawn at source is black' do
+              expect(game.board.board[3][4].piece.black).to eq(true)
+            end
+          end
+        end
       end
     end
   end
