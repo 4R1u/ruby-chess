@@ -66,13 +66,12 @@ class Game
   end
 
   def find_source_pawn(dst, str)
-    src = if str.length > 2
-            find_capturing_pawn(dst, str[0].ord - 'a'.ord) if ('a'..'h').cover?(str[0])
-          else
-            find_pawn_source_one_square_behind(dst) ||
-              find_pawn_source_two_squares_behind(dst)
-          end
-    src if src
+    if str.length > 2
+      find_capturing_pawn(dst, str[0].ord - 'a'.ord)
+    elsif @board.board[dst[0]][dst[1]].piece.nil?
+      find_pawn_source_one_square_behind(dst) ||
+        find_pawn_source_two_squares_behind(dst)
+    end
   end
 
   def find_pawn_source_one_square_behind(dst)
@@ -92,8 +91,11 @@ class Game
   end
 
   def find_capturing_pawn(dst, file_number)
+    return unless (0..7).cover?(file_number)
+
     src = [dst[0] + (@current_player == 'white' ? 1 : -1), file_number]
     piece = @board.board[src[0]][src[1]].piece
-    src if piece.is_a?(Pawn) && piece.black == (@current_player == 'black')
+    src if piece.is_a?(Pawn) && piece.black == (@current_player == 'black') &&
+           (dst[1] - file_number).abs == 1
   end
 end

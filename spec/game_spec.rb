@@ -273,6 +273,76 @@ describe Game do
             expect(game.current_player).to eq('black')
           end
         end
+
+        context 'white pawn tries to capture black pawn in front of it' do
+          before do
+            game.move('e4')
+            game.move('e5')
+          end
+
+          context 'using capture notation' do
+            before do
+              game.move('exe5')
+            end
+
+            it 'pawn at source is white' do
+              expect(game.board.board[4][4].piece.black).to eq(false)
+            end
+
+            it 'pawn at destination is black' do
+              expect(game.board.board[3][4].piece.black).to eq(true)
+            end
+          end
+
+          context 'without capture notation' do
+            before do
+              game.move('e5')
+            end
+
+            it 'pawn at source is white' do
+              expect(game.board.board[4][4].piece.black).to eq(false)
+            end
+
+            it 'pawn at destination is black' do
+              expect(game.board.board[3][4].piece.black).to eq(true)
+            end
+          end
+        end
+        context 'black pawn tries to capture white pawn in front of it' do
+          before do
+            game.move('e4')
+            game.move('e5')
+            game.move('d3')
+          end
+
+          context 'using capture notation' do
+            before do
+              game.move('exe4')
+            end
+
+            it 'pawn at source is black' do
+              expect(game.board.board[3][4].piece.black).to eq(true)
+            end
+
+            it 'pawn at destination is white' do
+              expect(game.board.board[4][4].piece.black).to eq(false)
+            end
+          end
+
+          context 'without capture notation' do
+            before do
+              game.move('e4')
+            end
+
+            it 'pawn at source is black' do
+              expect(game.board.board[3][4].piece.black).to eq(true)
+            end
+
+            it 'pawn at destination is white' do
+              expect(game.board.board[4][4].piece.black).to eq(false)
+            end
+          end
+        end
       end
     end
   end
