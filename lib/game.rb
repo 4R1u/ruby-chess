@@ -19,6 +19,7 @@ class Game
     @board = Board.new
     setup_board
     @current_player = 'white'
+    @moves = []
   end
 
   def move(str)
@@ -26,9 +27,10 @@ class Game
     src = find_source_pawn(dst, str) if dst
     return unless src && dst
 
-    @board.info_at(src, :moven?, true)
+    @board.info_at(src, :moven?, @moves.length)
     @board.move_piece(src, dst)
     @current_player = %w[white black].find { |player| player != @current_player }
+    @moves << str
   end
 
   private
