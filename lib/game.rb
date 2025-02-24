@@ -62,14 +62,14 @@ class Game
   end
 
   def find_destination(str)
-    dst = [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
+    dst = str.length <= 4 ? [8 - str[-1].to_i, str[-2].ord - 'a'.ord] : [8 - str[3].to_i, str[2].ord - 'a'.ord]
     dst if @board.board[dst[0]][dst[1]].piece&.black !=
            (@current_player == 'black')
   end
 
   def find_source_pawn(dst, str)
     if str.length > 2
-      find_capturing_pawn(dst, str[0].ord - 'a'.ord)
+      str.include?('e.p.') ? find_en_passant_source(dst, str) : find_capturing_pawn(dst, str[0].ord - 'a'.ord)
     elsif @board.board[dst[0]][dst[1]].piece.nil?
       find_pawn_source_one_square_behind(dst) ||
         find_pawn_source_two_squares_behind(dst)
@@ -99,5 +99,15 @@ class Game
     piece = @board.board[src[0]][src[1]].piece
     src if piece.is_a?(Pawn) && piece.black == (@current_player == 'black') &&
            (dst[1] - file_number).abs == 1
+  end
+
+  def find_en_passant_source(dst, str)
+    src = [dst[0] + (@current_player == 'white' ? 1 : -1), str[0].ord - 'a'.ord]
+    piece = @board.board[src[0]][src[1]].piece
+    if piece.is_a?(Pawn) && piece.black == (@current_player == 'black') &&
+       (dst[1] - src[1]).abs == 1
+      @board.remove_piece([dst[0] + (@current_player == 'white' ? 1 : -1), dst[1]])
+      src
+    end
   end
 end

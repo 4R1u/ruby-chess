@@ -357,6 +357,40 @@ describe Game do
             expect(game.board.board[5][4].piece).to be_nil
           end
         end
+
+        context 'en passant captures' do
+          before do
+            game.move('e4')
+            game.move('a5')
+            game.move('e5')
+            game.move('a4')
+          end
+          context 'white pawn captures black pawn' do
+            before do
+              game.move('h3')
+              game.move('f5')
+            end
+
+            context 'with e.p. notation' do
+              before do
+                game.move('exf6 e.p.')
+              end
+
+              it 'pawn at destination is white' do
+                expect(game.board.board[2][5].piece.black).to eq(false)
+              end
+              it 'black pawn captured' do
+                expect(game.board.board[3][5].piece).to be_nil
+              end
+            end
+
+            context 'without e.p. notation' do
+              before do
+                game.move('exf6')
+              end
+            end
+          end
+        end
       end
     end
   end
