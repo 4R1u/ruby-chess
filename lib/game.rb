@@ -97,10 +97,9 @@ class Game
     return unless (0..7).cover?(file_number)
 
     src = [dst[0] + (@current_player == 'white' ? 1 : -1), file_number]
-    piece = @board.board[src[0]][src[1]].piece
-    src if piece.is_a?(Pawn) && piece.black == (@current_player == 'black') &&
+    src if @board.pawn?(src) && @board.friend?(src, @current_player) &&
            (dst[1] - file_number).abs == 1 &&
-           @board.board[dst[0]][dst[1]].piece&.black == (@current_player == 'white')
+           @board.enemy?(dst, @current_player)
   end
 
   def find_en_passant_source(dst, str)
