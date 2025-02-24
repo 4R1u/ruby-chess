@@ -101,10 +101,9 @@ class Game
 
   def find_pawn_source_two_squares_behind(dst)
     src = [dst[0] + (@current_player == 'white' ? 2 : -2), dst[1]]
-    piece = @board.board[src[0]][src[1]].piece
 
-    src if piece.is_a?(Pawn) && !piece.info[:moven?] &&
-           (piece.black != (@current_player == 'white'))
+    src if @board.pawn?(src) && !@board.info_at(src, :moven?) &&
+           friend?(src)
   end
 
   def find_capturing_pawn(dst, file_number)
