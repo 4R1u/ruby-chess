@@ -345,16 +345,31 @@ describe Game do
         end
 
         context 'white pawn tries to move into empty square with x abbreviation' do
-          before do
-            game.move('exe3')
+          context 'moving straight ahead' do
+            before do
+              game.move('exe3')
+            end
+
+            it 'piece at source is pawn' do
+              expect(game.board.board[6][4].piece).to be_a(Pawn)
+            end
+
+            it 'destination is empty' do
+              expect(game.board.board[5][4].piece).to be_nil
+            end
           end
 
-          it 'piece at source is pawn' do
-            expect(game.board.board[6][4].piece).to be_a(Pawn)
-          end
+          context 'moving left' do
+            before do
+              game.move('fxe3')
+            end
+            it 'piece at source is pawn' do
+              expect(game.board.board[6][5].piece).to be_a(Pawn)
+            end
 
-          it 'destination is empty' do
-            expect(game.board.board[5][4].piece).to be_nil
+            it 'destination is empty' do
+              expect(game.board.board[5][4].piece).to be_nil
+            end
           end
         end
 
@@ -379,6 +394,9 @@ describe Game do
               it 'pawn at destination is white' do
                 expect(game.board.board[2][5].piece.black).to eq(false)
               end
+              it 'source is empty' do
+                expect(game.board.board[3][4].piece).to be_nil
+              end
               it 'black pawn captured' do
                 expect(game.board.board[3][5].piece).to be_nil
               end
@@ -387,6 +405,16 @@ describe Game do
             context 'without e.p. notation' do
               before do
                 game.move('exf6')
+              end
+
+              it 'pawn at destination is white' do
+                expect(game.board.board[2][5].piece.black).to eq(false)
+              end
+              it 'source is empty' do
+                expect(game.board.board[3][4].piece).to be_nil
+              end
+              it 'black pawn captured' do
+                expect(game.board.board[3][5].piece).to be_nil
               end
             end
           end
@@ -415,6 +443,16 @@ describe Game do
             context 'without e.p. notation' do
               before do
                 game.move('axb3')
+              end
+
+              it 'pawn at destination is black' do
+                expect(game.board.board[5][1].piece.black).to eq(true)
+              end
+              it 'source is empty' do
+                expect(game.board.board[4][0])
+              end
+              it 'white pawn captured' do
+                expect(game.board.board[4][1].piece).to be_nil
               end
             end
           end

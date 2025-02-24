@@ -69,7 +69,7 @@ class Game
 
   def find_source_pawn(dst, str)
     if str.length > 2
-      str.include?('e.p.') ? find_en_passant_source(dst, str) : find_capturing_pawn(dst, str[0].ord - 'a'.ord)
+      find_en_passant_source(dst, str) || find_capturing_pawn(dst, str[0].ord - 'a'.ord)
     elsif @board.board[dst[0]][dst[1]].piece.nil?
       find_pawn_source_one_square_behind(dst) ||
         find_pawn_source_two_squares_behind(dst)
@@ -98,15 +98,23 @@ class Game
     src = [dst[0] + (@current_player == 'white' ? 1 : -1), file_number]
     piece = @board.board[src[0]][src[1]].piece
     src if piece.is_a?(Pawn) && piece.black == (@current_player == 'black') &&
-           (dst[1] - file_number).abs == 1
+           (dst[1] - file_number).abs == 1 &&
+           @board.board[dst[0]][dst[1]].piece&.black == (@current_player == 'white')
   end
 
   def find_en_passant_source(dst, str)
     src = [dst[0] + (@current_player == 'white' ? 1 : -1), str[0].ord - 'a'.ord]
+    removed = [dst[0] + (@current_player == 'white' ? 1 : -1), dst[1]]
+
+    return unless (0..7).cover?(src[0]) && (0..7).cover?(src[1]) &&
+                  (0..7).cover?(dst[0]) && (0..7).cover?(dst[1]) &&
+                  (0..7).cover?(removed[0]) && (0..7).cover?(removed[1])
+    return unless @board.board[removed[0]][removed[1]].piece&.black == (@current_player == 'white')
+
     piece = @board.board[src[0]][src[1]].piece
     if piece.is_a?(Pawn) && piece.black == (@current_player == 'black') &&
        (dst[1] - src[1]).abs == 1
-      @board.remove_piece([dst[0] + (@current_player == 'white' ? 1 : -1), dst[1]])
+      @board.remove_piece(removed)
       src
     end
   end
