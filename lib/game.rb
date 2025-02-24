@@ -84,7 +84,8 @@ class Game
 
   def find_source_pawn(dst, str)
     if str.length > 2
-      find_en_passant_source(dst, str) || find_capturing_pawn(dst, str[0].ord - 'a'.ord)
+      file_number = str[0].ord - 'a'.ord
+      find_en_passant_source(dst, file_number) || find_capturing_pawn(dst, file_number)
     elsif @board.board[dst[0]][dst[1]].piece.nil?
       find_pawn_source_one_square_behind(dst) ||
         find_pawn_source_two_squares_behind(dst)
@@ -112,8 +113,8 @@ class Game
            enemy?(dst)
   end
 
-  def find_en_passant_source(dst, str)
-    src = [dst[0] + backwards, str[0].ord - 'a'.ord]
+  def find_en_passant_source(dst, file_number)
+    src = [dst[0] + backwards, file_number]
     removed = [src[0], dst[1]]
 
     return unless @board.valid_coords?(src) &&
