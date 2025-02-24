@@ -62,7 +62,8 @@ class Game
   end
 
   def find_destination(str)
-    dst = str.length <= 4 ? [8 - str[-1].to_i, str[-2].ord - 'a'.ord] : [8 - str[3].to_i, str[2].ord - 'a'.ord]
+    gstr = str.sub(' e.p.', '')
+    dst = [8 - gstr[-1].to_i, gstr[-2].ord - 'a'.ord]
     dst if @board.board[dst[0]][dst[1]].piece&.black !=
            (@current_player == 'black')
   end
