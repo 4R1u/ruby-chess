@@ -93,10 +93,7 @@ class Game
 
   def find_pawn_source_one_square_behind(dst)
     src = [dst[0] + (current_player == 'white' ? 1 : -1), dst[1]]
-    piece = @board.board[src[0]][src[1]].piece
-    return nil if piece.nil? || piece.black == (@current_player == 'white')
-
-    src if piece.is_a?(Pawn)
+    src if @board.pawn?(src) && friend?(src)
   end
 
   def find_pawn_source_two_squares_behind(dst)
