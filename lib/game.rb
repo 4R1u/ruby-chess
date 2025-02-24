@@ -61,6 +61,20 @@ class Game
     end
   end
 
+  def friend?(coords)
+    @board.board[coords[0]][coords[1]].piece&.black ==
+      (@current_player == 'black')
+  end
+
+  def enemy?(coords)
+    @board.board[coords[0]][coords[1]].piece&.black ==
+      (@current_player == 'white')
+  end
+
+  def backwards
+    (@current_player == 'white' ? 1 : -1)
+  end
+
   def find_destination(str)
     gstr = str.sub(' e.p.', '')
     dst = [8 - gstr[-1].to_i, gstr[-2].ord - 'a'.ord]
@@ -97,20 +111,19 @@ class Game
     return unless (0..7).cover?(file_number)
 
     src = [dst[0] + (@current_player == 'white' ? 1 : -1), file_number]
-    src if @board.pawn?(src) && @board.friend?(src, @current_player) &&
+    src if @board.pawn?(src) && friend?(src) &&
            (dst[1] - file_number).abs == 1 &&
-           @board.enemy?(dst, @current_player)
+           enemy?(dst)
   end
 
   def find_en_passant_source(dst, str)
-    src = [dst[0] + (@current_player == 'white' ? 1 : -1), str[0].ord - 'a'.ord]
-    removed = [dst[0] + (@current_player == 'white' ? 1 : -1), dst[1]]
+    src = [dst[0] + backwards, str[0].ord - 'a'.ord]
+    removed = [src[0], dst[1]]
 
     return unless @board.valid_coords?(src) &&
-                  @board.valid_coords?(dst) && @board.valid_coords?(removed) && @board.enemy?(removed,
-                                                                                              @current_player)
+                  @board.valid_coords?(dst) && enemy?(removed)
 
-    if @board.pawn?(src) && @board.friend?(src, @current_player) &&
+    if @board.pawn?(src) && friend?(src) &&
        (dst[1] - src[1]).abs == 1
       @board.remove_piece(removed)
       src

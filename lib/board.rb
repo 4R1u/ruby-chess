@@ -52,16 +52,6 @@ class Board
     place_piece(dst, remove_piece(src))
   end
 
-  def friend?(coords, current_player)
-    @board[coords[0]][coords[1]].piece&.black ==
-      (current_player == 'black')
-  end
-
-  def enemy?(coords, current_player)
-    @board[coords[0]][coords[1]].piece&.black ==
-      (current_player == 'white')
-  end
-
   def pawn?(coords)
     @board[coords[0]][coords[1]].piece.is_a?(Pawn)
   end
