@@ -106,13 +106,11 @@ class Game
     src = [dst[0] + (@current_player == 'white' ? 1 : -1), str[0].ord - 'a'.ord]
     removed = [dst[0] + (@current_player == 'white' ? 1 : -1), dst[1]]
 
-    return unless (0..7).cover?(src[0]) && (0..7).cover?(src[1]) &&
-                  (0..7).cover?(dst[0]) && (0..7).cover?(dst[1]) &&
-                  (0..7).cover?(removed[0]) && (0..7).cover?(removed[1])
-    return unless @board.board[removed[0]][removed[1]].piece&.black == (@current_player == 'white')
+    return unless @board.valid_coords?(src) &&
+                  @board.valid_coords?(dst) && @board.valid_coords?(removed) && @board.enemy?(removed,
+                                                                                              @current_player)
 
-    piece = @board.board[src[0]][src[1]].piece
-    if piece.is_a?(Pawn) && piece.black == (@current_player == 'black') &&
+    if @board.pawn?(src) && @board.friend?(src, @current_player) &&
        (dst[1] - src[1]).abs == 1
       @board.remove_piece(removed)
       src
