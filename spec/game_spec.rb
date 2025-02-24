@@ -390,6 +390,34 @@ describe Game do
               end
             end
           end
+
+          context 'black pawn captures white pawn' do
+            before do
+              game.move('b4')
+            end
+
+            context 'with e.p. notation' do
+              before do
+                game.move('axb3 e.p.')
+              end
+
+              it 'pawn at destination is black' do
+                expect(game.board.board[5][1].piece.black).to eq(true)
+              end
+              it 'source is empty' do
+                expect(game.board.board[4][0])
+              end
+              it 'white pawn captured' do
+                expect(game.board.board[4][1].piece).to be_nil
+              end
+            end
+
+            context 'without e.p. notation' do
+              before do
+                game.move('axb3')
+              end
+            end
+          end
         end
       end
     end
