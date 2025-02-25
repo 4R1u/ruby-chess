@@ -4,6 +4,7 @@ require_relative '../lib/game'
 
 describe Game do
   subject(:game) { described_class.new }
+
   describe '#move' do
     describe 'testing pawn moves' do
       context 'white pawn moves forward one square' do
@@ -69,9 +70,11 @@ describe Game do
         it 'pawn is at destination' do
           expect(game.board.board[2][4].piece).to be_a(Pawn)
         end
+
         it 'source is empty' do
           expect(game.board.board[1][4].piece).to be_nil
         end
+
         it 'current player is white again' do
           expect(game.current_player).to eq('white')
         end
@@ -156,8 +159,9 @@ describe Game do
             end
 
             it 'pawn at destination is white' do
-              expect(game.board.board[3][4].piece.black).to eq(false)
+              expect(game.board.board[3][4].piece.black).to be(false)
             end
+
             it 'source is empty' do
               expect(game.board.board[4][3].piece).to be_nil
             end
@@ -169,8 +173,9 @@ describe Game do
             end
 
             it 'pawn at destination is white' do
-              expect(game.board.board[3][4].piece.black).to eq(false)
+              expect(game.board.board[3][4].piece.black).to be(false)
             end
+
             it 'source is empty' do
               expect(game.board.board[4][3].piece).to be_nil
             end
@@ -182,10 +187,11 @@ describe Game do
             end
 
             it 'pawn at destination is black' do
-              expect(game.board.board[3][4].piece.black).to eq(true)
+              expect(game.board.board[3][4].piece.black).to be(true)
             end
+
             it 'pawn at source is white' do
-              expect(game.board.board[4][3].piece.black).to eq(false)
+              expect(game.board.board[4][3].piece.black).to be(false)
             end
           end
         end
@@ -203,8 +209,9 @@ describe Game do
             end
 
             it 'pawn at destination is black' do
-              expect(game.board.board[4][3].piece.black).to eq(true)
+              expect(game.board.board[4][3].piece.black).to be(true)
             end
+
             it 'source is empty' do
               expect(game.board.board[3][4].piece).to be_nil
             end
@@ -216,8 +223,9 @@ describe Game do
             end
 
             it 'pawn at destination is black' do
-              expect(game.board.board[4][3].piece.black).to eq(true)
+              expect(game.board.board[4][3].piece.black).to be(true)
             end
+
             it 'source is empty' do
               expect(game.board.board[3][4].piece).to be_nil
             end
@@ -229,10 +237,11 @@ describe Game do
             end
 
             it 'pawn at destination is white' do
-              expect(game.board.board[4][3].piece.black).to eq(false)
+              expect(game.board.board[4][3].piece.black).to be(false)
             end
+
             it 'pawn at source is black' do
-              expect(game.board.board[3][4].piece.black).to eq(true)
+              expect(game.board.board[3][4].piece.black).to be(true)
             end
           end
         end
@@ -245,11 +254,13 @@ describe Game do
           end
 
           it 'pawn at source is white' do
-            expect(game.board.board[6][3].piece.black).to eq(false)
+            expect(game.board.board[6][3].piece.black).to be(false)
           end
+
           it 'pawn at destination is white' do
-            expect(game.board.board[5][4].piece.black).to eq(false)
+            expect(game.board.board[5][4].piece.black).to be(false)
           end
+
           it 'current player is still white' do
             expect(game.current_player).to eq('white')
           end
@@ -264,11 +275,13 @@ describe Game do
           end
 
           it 'pawn at source is black' do
-            expect(game.board.board[1][5].piece.black).to eq(true)
+            expect(game.board.board[1][5].piece.black).to be(true)
           end
+
           it 'pawn at destination is black' do
-            expect(game.board.board[2][4].piece.black).to eq(true)
+            expect(game.board.board[2][4].piece.black).to be(true)
           end
+
           it 'current player is still black' do
             expect(game.current_player).to eq('black')
           end
@@ -286,11 +299,11 @@ describe Game do
             end
 
             it 'pawn at source is white' do
-              expect(game.board.board[4][4].piece.black).to eq(false)
+              expect(game.board.board[4][4].piece.black).to be(false)
             end
 
             it 'pawn at destination is black' do
-              expect(game.board.board[3][4].piece.black).to eq(true)
+              expect(game.board.board[3][4].piece.black).to be(true)
             end
           end
 
@@ -300,14 +313,15 @@ describe Game do
             end
 
             it 'pawn at source is white' do
-              expect(game.board.board[4][4].piece.black).to eq(false)
+              expect(game.board.board[4][4].piece.black).to be(false)
             end
 
             it 'pawn at destination is black' do
-              expect(game.board.board[3][4].piece.black).to eq(true)
+              expect(game.board.board[3][4].piece.black).to be(true)
             end
           end
         end
+
         context 'black pawn tries to capture white pawn in front of it' do
           before do
             game.move('e4')
@@ -321,11 +335,11 @@ describe Game do
             end
 
             it 'pawn at source is black' do
-              expect(game.board.board[3][4].piece.black).to eq(true)
+              expect(game.board.board[3][4].piece.black).to be(true)
             end
 
             it 'pawn at destination is white' do
-              expect(game.board.board[4][4].piece.black).to eq(false)
+              expect(game.board.board[4][4].piece.black).to be(false)
             end
           end
 
@@ -335,11 +349,11 @@ describe Game do
             end
 
             it 'pawn at source is black' do
-              expect(game.board.board[3][4].piece.black).to eq(true)
+              expect(game.board.board[3][4].piece.black).to be(true)
             end
 
             it 'pawn at destination is white' do
-              expect(game.board.board[4][4].piece.black).to eq(false)
+              expect(game.board.board[4][4].piece.black).to be(false)
             end
           end
         end
@@ -363,6 +377,7 @@ describe Game do
             before do
               game.move('fxe3')
             end
+
             it 'piece at source is pawn' do
               expect(game.board.board[6][5].piece).to be_a(Pawn)
             end
@@ -380,6 +395,7 @@ describe Game do
             game.move('e5')
             game.move('a4')
           end
+
           context 'white pawn captures black pawn' do
             before do
               game.move('h3')
@@ -392,11 +408,13 @@ describe Game do
               end
 
               it 'pawn at destination is white' do
-                expect(game.board.board[2][5].piece.black).to eq(false)
+                expect(game.board.board[2][5].piece.black).to be(false)
               end
+
               it 'source is empty' do
                 expect(game.board.board[3][4].piece).to be_nil
               end
+
               it 'black pawn captured' do
                 expect(game.board.board[3][5].piece).to be_nil
               end
@@ -408,11 +426,13 @@ describe Game do
               end
 
               it 'pawn at destination is white' do
-                expect(game.board.board[2][5].piece.black).to eq(false)
+                expect(game.board.board[2][5].piece.black).to be(false)
               end
+
               it 'source is empty' do
                 expect(game.board.board[3][4].piece).to be_nil
               end
+
               it 'black pawn captured' do
                 expect(game.board.board[3][5].piece).to be_nil
               end
@@ -430,11 +450,13 @@ describe Game do
               end
 
               it 'pawn at destination is black' do
-                expect(game.board.board[5][1].piece.black).to eq(true)
+                expect(game.board.board[5][1].piece.black).to be(true)
               end
+
               it 'source is empty' do
-                expect(game.board.board[4][0])
+                expect(game.board.board[4][0].piece).to be_nil
               end
+
               it 'white pawn captured' do
                 expect(game.board.board[4][1].piece).to be_nil
               end
@@ -446,11 +468,13 @@ describe Game do
               end
 
               it 'pawn at destination is black' do
-                expect(game.board.board[5][1].piece.black).to eq(true)
+                expect(game.board.board[5][1].piece.black).to be(true)
               end
+
               it 'source is empty' do
-                expect(game.board.board[4][0])
+                expect(game.board.board[4][0].piece).to be_nil
               end
+
               it 'white pawn captured' do
                 expect(game.board.board[4][1].piece).to be_nil
               end

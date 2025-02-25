@@ -6,6 +6,7 @@ require_relative '../lib/pawn'
 
 describe Square do
   subject(:square) { described_class.new(King.new) }
+
   describe '#piece=' do
     context 'when the new piece candidate is invalid' do
       before do

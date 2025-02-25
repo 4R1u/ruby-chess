@@ -5,6 +5,7 @@ require_relative '../lib/king'
 
 describe Board do
   subject(:board) { described_class.new }
+
   describe '#place_piece' do
     king = King.new(black: true)
     before do

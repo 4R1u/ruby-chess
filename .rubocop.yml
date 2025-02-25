@@ -10,6 +10,7 @@
 # See https://docs.rubocop.org/rubocop/configuration
 
 require: rubocop-performance
+require: rubocop-rspec
 AllCops:
   Exclude:
     - 'Gemfile'
@@ -21,3 +22,9 @@ Metrics/BlockLength:
 Layout/LineLength:
   Exclude:
     - 'spec/*'
+RSpec/NestedGroups:
+  Exclude:
+    - 'spec/game_spec.rb'
+RSpec/ContextWording:
+  Exclude:
+    - 'spec/game_spec.rb'
