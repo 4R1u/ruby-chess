@@ -59,6 +59,30 @@ describe Game do
             expect(game.current_player).to eq('white')
           end
         end
+
+        context 'when there is a pawn in front' do
+          before do
+            game.move 'e4'
+            game.move 'd5'
+            game.move 'e5'
+            game.move 'd4'
+            game.move 'e6'
+            game.move 'd3'
+            game.move 'd4'
+          end
+
+          it 'pawn at source is white' do
+            expect(game.board.board[6][3].piece.black).to be(false)
+          end
+
+          it 'destination is empty' do
+            expect(game.board.board[4][3].piece).to be_nil
+          end
+
+          it 'pawn in front is black' do
+            expect(game.board.board[5][3].piece.black).to be(true)
+          end
+        end
       end
 
       context 'black pawn moves forward one square' do
@@ -114,6 +138,31 @@ describe Game do
 
           it 'current player is still black' do
             expect(game.current_player).to eq('black')
+          end
+        end
+
+        context 'when there is a pawn in front' do
+          before do
+            game.move 'e4'
+            game.move 'd5'
+            game.move 'e5'
+            game.move 'd4'
+            game.move 'e6'
+            game.move 'd3'
+            game.move 'd4'
+            game.move 'e5'
+          end
+
+          it 'pawn at source is black' do
+            expect(game.board.board[1][4].piece.black).to be(true)
+          end
+
+          it 'destination is empty' do
+            expect(game.board.board[3][4].piece).to be_nil
+          end
+
+          it 'pawn in front is white' do
+            expect(game.board.board[2][4].piece.black).to be(false)
           end
         end
       end

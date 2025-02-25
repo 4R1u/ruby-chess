@@ -56,6 +56,10 @@ class Board
     @board[coords[0]][coords[1]].piece.is_a?(Pawn)
   end
 
+  def empty?(coords)
+    @board[coords[0]][coords[1]].piece.nil?
+  end
+
   def valid_coords?(coords)
     (0..7).cover?(coords[0]) && (0..7).cover?(coords[1])
   end

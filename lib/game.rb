@@ -71,6 +71,10 @@ class Game
       (@current_player == 'white')
   end
 
+  def forwards
+    (@current_player == 'white' ? -1 : 1)
+  end
+
   def backwards
     (@current_player == 'white' ? 1 : -1)
   end
@@ -101,7 +105,7 @@ class Game
     src = [dst[0] + (@current_player == 'white' ? 2 : -2), dst[1]]
 
     src if @board.pawn?(src) && !@board.info_at(src, :moven?) &&
-           friend?(src)
+           friend?(src) && @board.empty?([src[0] + forwards, src[1]])
   end
 
   def find_capturing_pawn(dst, file_number)
