@@ -56,6 +56,10 @@ class Board
     @board[coords[0]][coords[1]].piece.is_a?(Pawn)
   end
 
+  def rook?(coords)
+    @board[coords[0]][coords[1]].piece.is_a?(Rook)
+  end
+
   def empty?(coords)
     @board[coords[0]][coords[1]].piece.nil?
   end

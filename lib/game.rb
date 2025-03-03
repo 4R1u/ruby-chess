@@ -24,7 +24,7 @@ class Game
 
   def move(str)
     dst = find_destination(str)
-    src = find_source_pawn(dst, str) if dst
+    src = find_source(dst, str) if dst
     return unless src && dst
 
     @board.info_at(src, :moven?, @moves.length)
@@ -79,7 +79,37 @@ class Game
     (@current_player == 'white' ? 1 : -1)
   end
 
+  def find_source(dst, str)
+    case (str[0])
+    when 'R'
+      find_source_rook(dst)
+    else
+      find_source_pawn(dst, str)
+    end
+  end
+
   def find_destination(str)
+    case (str[0])
+    when 'R'
+      find_rook_destination(str)
+    else
+      find_pawn_destination(str)
+    end
+  end
+
+  def find_rook_destination(str)
+    [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
+  end
+
+  def find_source_rook(dst)
+    ((dst[0] + 1)..7).each do |row|
+      coords = [row, dst[1]]
+      return coords if friend?(coords) && @board.rook?(coords)
+      return nil unless @board.empty?(coords)
+    end
+  end
+
+  def find_pawn_destination(str)
     gstr = str.sub(' e.p.', '')
     dst = [8 - gstr[-1].to_i, gstr[-2].ord - 'a'.ord]
     dst if @board.board[dst[0]][dst[1]].piece&.black !=

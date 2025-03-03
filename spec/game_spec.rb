@@ -532,5 +532,27 @@ describe Game do
         end
       end
     end
+
+    describe 'testing rook moves' do
+      describe 'moving validly' do
+        describe 'moving vertically' do
+          describe 'moving up' do
+            before do
+              game.move 'a4'
+              game.move 'a5'
+              game.move 'Ra3'
+            end
+
+            it 'source is empty' do
+              expect(game.board.board[7][0].piece).to be_nil
+            end
+
+            it 'destination has rook' do
+              expect(game.board.board[5][0].piece).to be_a(Rook)
+            end
+          end
+        end
+      end
+    end
   end
 end
