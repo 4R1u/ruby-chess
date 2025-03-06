@@ -102,11 +102,29 @@ class Game
   end
 
   def find_source_rook(dst)
+    up = find_source_rook_up(dst)
+    down = find_source_rook_down(dst)
+    return up if up && down.nil?
+
+    down if down && up.nil?
+  end
+
+  def find_source_rook_down(dst)
     ((dst[0] + 1)..7).each do |row|
       coords = [row, dst[1]]
       return coords if friend?(coords) && @board.rook?(coords)
       return nil unless @board.empty?(coords)
     end
+    nil
+  end
+
+  def find_source_rook_up(dst)
+    (0..(dst[0] - 1)).reverse_each do |row|
+      coords = [row, dst[1]]
+      return coords if friend?(coords) && @board.rook?(coords)
+      return nil unless @board.empty?(coords)
+    end
+    nil
   end
 
   def find_pawn_destination(str)
