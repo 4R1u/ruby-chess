@@ -550,20 +550,41 @@ describe Game do
             it 'destination has rook' do
               expect(game.board.board[5][0].piece).to be_a(Rook)
             end
+          end
 
-            context 'moving back down' do
-              before do
-                game.move 'b5'
-                game.move 'Ra3'
-              end
+          describe 'moving down' do
+            before do
+              game.move 'a4'
+              game.move 'a5'
+              game.move 'Ra3'
+              game.move 'b5'
+              game.move 'Ra1'
+            end
 
-              it 'source is empty' do
-                expect(game.board.board[5][0].piece).to be_nil
-              end
+            it 'source is empty' do
+              expect(game.board.board[5][0].piece).to be_nil
+            end
 
-              it 'destination has rook' do
-                expect(game.board.board[7][0].piece).to be_a(Rook)
-              end
+            it 'destination has rook' do
+              expect(game.board.board[7][0].piece).to be_a(Rook)
+            end
+          end
+
+          describe 'when moving left' do
+            before do
+              game.move 'a4'
+              game.move 'a5'
+              game.move 'Ra3'
+              game.move 'b5'
+              game.move 'Rf3'
+            end
+
+            it 'source is empty' do
+              expect(game.board.board[5][0].piece).to be_nil
+            end
+
+            it 'destination has rook' do
+              expect(game.board.board[5][5].piece).to be_a(Rook)
             end
           end
         end
