@@ -105,12 +105,22 @@ class Game
     up = find_source_rook_up(dst)
     down = find_source_rook_down(dst)
     right = find_source_rook_right(dst)
-    uniq = [nil, up, down, right].uniq
+    left = find_source_rook_left(dst)
+    uniq = [nil, up, down, right, left].uniq
     uniq[1] if uniq.length == 2
   end
 
+  def find_source_rook_left(dst)
+    ((dst[1] + 1)..7).each do |col|
+      coords = [dst[0], col]
+      return coords if friend?(coords) && @board.rook?(coords)
+      return nil unless @board.empty?(coords)
+    end
+    nil
+  end
+
   def find_source_rook_right(dst)
-    (0..(dst[1] + 1)).reverse_each do |col|
+    (0..(dst[1] - 1)).reverse_each do |col|
       coords = [dst[0], col]
       return coords if friend?(coords) && @board.rook?(coords)
       return nil unless @board.empty?(coords)

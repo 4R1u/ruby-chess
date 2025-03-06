@@ -587,6 +587,26 @@ describe Game do
               expect(game.board.board[5][5].piece).to be_a(Rook)
             end
           end
+
+          context 'when moving right' do
+            before do
+              game.move 'a4'
+              game.move 'a5'
+              game.move 'Ra3'
+              game.move 'b5'
+              game.move 'Rf3'
+              game.move 'b4'
+              game.move 'Ra3'
+            end
+
+            it 'source is empty' do
+              expect(game.board.board[5][5].piece).to be_nil
+            end
+
+            it 'destination has rook' do
+              expect(game.board.board[5][0].piece).to be_a(Rook)
+            end
+          end
         end
       end
     end
