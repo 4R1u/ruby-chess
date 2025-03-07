@@ -535,77 +535,129 @@ describe Game do
 
     describe 'testing rook moves' do
       describe 'moving validly' do
-        describe 'moving vertically' do
-          describe 'moving up' do
-            before do
-              game.move 'a4'
-              game.move 'a5'
-              game.move 'Ra3'
-            end
-
-            it 'source is empty' do
-              expect(game.board.board[7][0].piece).to be_nil
-            end
-
-            it 'destination has rook' do
-              expect(game.board.board[5][0].piece).to be_a(Rook)
-            end
+        describe 'moving up' do
+          before do
+            game.move 'a4'
+            game.move 'a5'
+            game.move 'Ra3'
           end
 
-          describe 'moving down' do
-            before do
-              game.move 'a4'
-              game.move 'a5'
-              game.move 'Ra3'
-              game.move 'b5'
-              game.move 'Ra1'
-            end
-
-            it 'source is empty' do
-              expect(game.board.board[5][0].piece).to be_nil
-            end
-
-            it 'destination has rook' do
-              expect(game.board.board[7][0].piece).to be_a(Rook)
-            end
+          it 'source is empty' do
+            expect(game.board.board[7][0].piece).to be_nil
           end
 
-          describe 'when moving left' do
-            before do
-              game.move 'a4'
-              game.move 'a5'
-              game.move 'Ra3'
-              game.move 'b5'
-              game.move 'Rf3'
-            end
+          it 'destination has rook' do
+            expect(game.board.board[5][0].piece).to be_a(Rook)
+          end
+        end
 
-            it 'source is empty' do
-              expect(game.board.board[5][0].piece).to be_nil
-            end
-
-            it 'destination has rook' do
-              expect(game.board.board[5][5].piece).to be_a(Rook)
-            end
+        describe 'moving down' do
+          before do
+            game.move 'a4'
+            game.move 'a5'
+            game.move 'Ra3'
+            game.move 'b5'
+            game.move 'Ra1'
           end
 
-          context 'when moving right' do
-            before do
-              game.move 'a4'
-              game.move 'a5'
-              game.move 'Ra3'
-              game.move 'b5'
-              game.move 'Rf3'
-              game.move 'b4'
-              game.move 'Ra3'
-            end
+          it 'source is empty' do
+            expect(game.board.board[5][0].piece).to be_nil
+          end
 
-            it 'source is empty' do
-              expect(game.board.board[5][5].piece).to be_nil
-            end
+          it 'destination has rook' do
+            expect(game.board.board[7][0].piece).to be_a(Rook)
+          end
+        end
 
-            it 'destination has rook' do
-              expect(game.board.board[5][0].piece).to be_a(Rook)
-            end
+        describe 'when moving left' do
+          before do
+            game.move 'a4'
+            game.move 'a5'
+            game.move 'Ra3'
+            game.move 'b5'
+            game.move 'Rf3'
+          end
+
+          it 'source is empty' do
+            expect(game.board.board[5][0].piece).to be_nil
+          end
+
+          it 'destination has rook' do
+            expect(game.board.board[5][5].piece).to be_a(Rook)
+          end
+        end
+
+        context 'when moving right' do
+          before do
+            game.move 'a4'
+            game.move 'a5'
+            game.move 'Ra3'
+            game.move 'b5'
+            game.move 'Rf3'
+            game.move 'b4'
+            game.move 'Ra3'
+          end
+
+          it 'source is empty' do
+            expect(game.board.board[5][5].piece).to be_nil
+          end
+
+          it 'destination has rook' do
+            expect(game.board.board[5][0].piece).to be_a(Rook)
+          end
+        end
+
+        context 'when capturing' do
+          before do
+            game.move 'a4'
+            game.move 'b5'
+            game.move 'b4'
+            game.move 'bxa4'
+            game.move 'Rxa4'
+          end
+
+          it 'source is empty' do
+            expect(game.board.board[7][0].piece).to be_nil
+          end
+
+          it 'destination has rook' do
+            expect(game.board.board[4][0].piece).to be_a(Rook)
+          end
+        end
+      end
+
+      context 'when trying to move invalidly' do
+        context 'when trying to jump over pieces' do
+          before do
+            game.move 'a4'
+            game.move 'b5'
+            game.move 'Ra5'
+          end
+
+          it 'source has rook' do
+            expect(game.board.board[7][0].piece).to be_a(Rook)
+          end
+
+          it 'destination is empty' do
+            expect(game.board.board[3][0].piece).to be_nil
+          end
+        end
+
+        context 'when trying to move diagonally' do
+          before do
+            game.move 'a4'
+            game.move 'b5'
+            game.move 'Ra3'
+            game.move 'b4'
+            game.move 'Rb5'
+          end
+
+          it 'source has rook' do
+            expect(game.board.board[5][0].piece).to be_a(Rook)
+          end
+
+          it 'destination is empty' do
+            expect(game.board.board[3][1].piece).to be_nil
           end
         end
       end
