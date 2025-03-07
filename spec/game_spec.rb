@@ -660,6 +660,22 @@ describe Game do
             expect(game.board.board[3][1].piece).to be_nil
           end
         end
+
+        context 'when trying to capture a friendly piece' do
+          before do
+            game.move 'a4'
+            game.move 'b5'
+            game.move 'Rxa4'
+          end
+
+          it 'source has rook' do
+            expect(game.board.board[7][0].piece).to be_a(Rook)
+          end
+
+          it 'destination has a pawn' do
+            expect(game.board.board[4][0].piece).to be_a(Pawn)
+          end
+        end
       end
     end
   end
