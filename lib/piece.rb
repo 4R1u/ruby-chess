@@ -10,4 +10,12 @@ class Piece
     @black = black
     @info = {}
   end
+
+  def self.destination
+    nil
+  end
+
+  def self.source
+    nil
+  end
 end

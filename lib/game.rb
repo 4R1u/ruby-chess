@@ -33,6 +33,24 @@ class Game
     @moves << str
   end
 
+  def friend?(coords)
+    @board.board[coords[0]][coords[1]].piece&.black ==
+      (@current_player == 'black')
+  end
+
+  def enemy?(coords)
+    @board.board[coords[0]][coords[1]].piece&.black ==
+      (@current_player == 'white')
+  end
+
+  def forwards
+    (@current_player == 'white' ? -1 : 1)
+  end
+
+  def backwards
+    (@current_player == 'white' ? 1 : -1)
+  end
+
   private
 
   def setup_board
@@ -61,24 +79,6 @@ class Game
     end
   end
 
-  def friend?(coords)
-    @board.board[coords[0]][coords[1]].piece&.black ==
-      (@current_player == 'black')
-  end
-
-  def enemy?(coords)
-    @board.board[coords[0]][coords[1]].piece&.black ==
-      (@current_player == 'white')
-  end
-
-  def forwards
-    (@current_player == 'white' ? -1 : 1)
-  end
-
-  def backwards
-    (@current_player == 'white' ? 1 : -1)
-  end
-
   def find_source(dst, str)
     case (str[0])
     when 'R'
@@ -91,7 +91,8 @@ class Game
   def find_destination(str)
     case (str[0])
     when 'R'
-      find_rook_destination(str)
+      Rook.destination(str, self)
+      # find_rook_destination(str)
     else
       find_pawn_destination(str)
     end
