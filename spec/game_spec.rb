@@ -649,15 +649,15 @@ describe Game do
             game.move 'b5'
             game.move 'Ra3'
             game.move 'b4'
-            game.move 'Rb5'
+            game.move 'Rc5'
           end
 
           it 'source has rook' do
             expect(game.board.board[5][0].piece).to be_a(Rook)
           end
 
-          it 'destination is empty' do
-            expect(game.board.board[3][1].piece).to be_nil
+          it 'destination has no rook' do
+            expect(game.board.board[3][2].piece).not_to be_a(Rook)
           end
         end
 
@@ -677,21 +677,39 @@ describe Game do
           end
         end
 
-        context 'when trying to capture without x'
+        context 'when trying to capture without x' do
           before do
             game.move 'a4'
             game.move 'b5'
+            game.move 'Ra3'
             game.move 'b4'
-            game.move 'bxa4'
-            game.move 'Ra4'
+            game.move 'a5'
+            game.move 'b3'
+            game.move 'Rb3'
+          end
+
+          it 'source has rook' do
+            expect(game.board.board[5][0].piece).to be_a(Rook)
+          end
+
+          it 'destination has pawn' do
+            expect(game.board.board[5][1].piece).to be_a(Pawn)
+          end
+        end
+
+        context 'when using the x notation without capturing' do
+          before do
+            game.move 'a4'
+            game.move 'b5'
+            game.move 'Rxa3'
           end
 
           it 'source has rook' do
             expect(game.board.board[7][0].piece).to be_a(Rook)
           end
 
-          it 'destination has pawn' do
-            expect(game.board.board[4][0].piece).to be_a(Pawn)
+          it 'destination is empty' do
+            expect(game.board.board[5][0].piece).to be_nil
           end
         end
       end
