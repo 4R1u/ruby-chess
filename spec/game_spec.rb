@@ -712,6 +712,43 @@ describe Game do
             expect(game.board.board[5][0].piece).to be_nil
           end
         end
+
+        context 'when trying to capture with th x notation wrongly' do
+          before do
+            game.move 'a4'
+            game.move 'b5'
+            game.move 'b4'
+            game.move 'bxa4'
+          end
+
+          context 'with x before R' do
+            before do
+              game.move 'xRa4'
+            end
+
+            it 'source has rook' do
+              expect(game.board.board[7][0].piece).to be_a(Rook)
+            end
+
+            it 'destination has no rook' do
+              expect(game.board.board[4][0].piece).not_to be_a(Rook)
+            end
+          end
+
+          context 'with x before rank' do
+            before do
+              game.move 'Rax4'
+            end
+
+            it 'source has rook' do
+              expect(game.board.board[7][0].piece).to be_a(Rook)
+            end
+
+            it 'destination has no rook' do
+              expect(game.board.board[4][0].piece).not_to be_a(Rook)
+            end
+          end
+        end
       end
     end
   end
