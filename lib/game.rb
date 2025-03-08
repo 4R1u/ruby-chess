@@ -100,7 +100,7 @@ class Game
   def find_rook_destination(str)
     dst = [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
     dst if @board.valid_coords?(dst) &&
-           ((enemy?(dst) && str.include?('x')) || (@board.empty?(dst) && !str.include?('x')))
+           (enemy?(dst) || (@board.empty?(dst) && !str.include?('x')))
   end
 
   def find_source_rook(dst)

@@ -613,15 +613,34 @@ describe Game do
             game.move 'b5'
             game.move 'b4'
             game.move 'bxa4'
-            game.move 'Rxa4'
           end
 
-          it 'source is empty' do
-            expect(game.board.board[7][0].piece).to be_nil
+          context 'with x' do
+            before do
+              game.move 'Rxa4'
+            end
+
+            it 'source is empty' do
+              expect(game.board.board[7][0].piece).to be_nil
+            end
+
+            it 'destination has rook' do
+              expect(game.board.board[4][0].piece).to be_a(Rook)
+            end
           end
 
-          it 'destination has rook' do
-            expect(game.board.board[4][0].piece).to be_a(Rook)
+          context 'without x' do
+            before do
+              game.move 'Ra4'
+            end
+
+            it 'source is empty' do
+              expect(game.board.board[7][0].piece).to be_nil
+            end
+
+            it 'destination has rook' do
+              expect(game.board.board[4][0].piece).to be_a(Rook)
+            end
           end
         end
       end
@@ -674,26 +693,6 @@ describe Game do
 
           it 'destination has a pawn' do
             expect(game.board.board[4][0].piece).to be_a(Pawn)
-          end
-        end
-
-        context 'when trying to capture without x' do
-          before do
-            game.move 'a4'
-            game.move 'b5'
-            game.move 'Ra3'
-            game.move 'b4'
-            game.move 'a5'
-            game.move 'b3'
-            game.move 'Rb3'
-          end
-
-          it 'source has rook' do
-            expect(game.board.board[5][0].piece).to be_a(Rook)
-          end
-
-          it 'destination has pawn' do
-            expect(game.board.board[5][1].piece).to be_a(Pawn)
           end
         end
 
