@@ -94,7 +94,7 @@ class Game
       Rook.destination(str, self)
       # find_rook_destination(str)
     else
-      find_pawn_destination(str)
+      Pawn.destination(str, self)
     end
   end
 
@@ -147,13 +147,6 @@ class Game
       return nil unless @board.empty?(coords)
     end
     nil
-  end
-
-  def find_pawn_destination(str)
-    gstr = str.sub(' e.p.', '')
-    dst = [8 - gstr[-1].to_i, gstr[-2].ord - 'a'.ord]
-    dst if @board.board[dst[0]][dst[1]].piece&.black !=
-           (@current_player == 'black')
   end
 
   def find_source_pawn(dst, str)
