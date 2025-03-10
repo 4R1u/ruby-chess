@@ -22,39 +22,43 @@ class Rook < Piece
     uniq[1] if uniq.length == 2
   end
 
-  def self.source_left(dst, game)
-    ((dst[1] + 1)..7).each do |col|
-      coords = [dst[0], col]
-      return coords if game.friend?(coords) && game.board.rook?(coords)
-      return nil unless game.board.empty?(coords)
-    end
-    nil
-  end
+  class << self
+    private
 
-  def self.source_right(dst, game)
-    (0..(dst[1] - 1)).reverse_each do |col|
-      coords = [dst[0], col]
-      return coords if game.friend?(coords) && game.board.rook?(coords)
-      return nil unless game.board.empty?(coords)
+    def source_left(dst, game)
+      ((dst[1] + 1)..7).each do |col|
+        coords = [dst[0], col]
+        return coords if game.friend?(coords) && game.board.rook?(coords)
+        return nil unless game.board.empty?(coords)
+      end
+      nil
     end
-    nil
-  end
 
-  def self.source_down(dst, game)
-    ((dst[0] + 1)..7).each do |row|
-      coords = [row, dst[1]]
-      return coords if game.friend?(coords) && game.board.rook?(coords)
-      return nil unless game.board.empty?(coords)
+    def source_right(dst, game)
+      (0..(dst[1] - 1)).reverse_each do |col|
+        coords = [dst[0], col]
+        return coords if game.friend?(coords) && game.board.rook?(coords)
+        return nil unless game.board.empty?(coords)
+      end
+      nil
     end
-    nil
-  end
 
-  def self.source_up(dst, game)
-    (0..(dst[0] - 1)).reverse_each do |row|
-      coords = [row, dst[1]]
-      return coords if game.friend?(coords) && game.board.rook?(coords)
-      return nil unless game.board.empty?(coords)
+    def source_down(dst, game)
+      ((dst[0] + 1)..7).each do |row|
+        coords = [row, dst[1]]
+        return coords if game.friend?(coords) && game.board.rook?(coords)
+        return nil unless game.board.empty?(coords)
+      end
+      nil
     end
-    nil
+
+    def source_up(dst, game)
+      (0..(dst[0] - 1)).reverse_each do |row|
+        coords = [row, dst[1]]
+        return coords if game.friend?(coords) && game.board.rook?(coords)
+        return nil unless game.board.empty?(coords)
+      end
+      nil
+    end
   end
 end
