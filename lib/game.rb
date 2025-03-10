@@ -82,7 +82,7 @@ class Game
   def find_source(dst, str)
     case (str[0])
     when 'R'
-      Rook.find_source(dst, self)
+      Rook.source(dst, self)
     else
       find_source_pawn(dst, str)
     end
