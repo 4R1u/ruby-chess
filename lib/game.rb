@@ -83,6 +83,8 @@ class Game
     case (str[0])
     when 'R'
       Rook.source(dst, self)
+    when 'N'
+      Knight.source(dst, self)
     else
       Pawn.source(dst, str, self)
     end
@@ -92,6 +94,8 @@ class Game
     case (str[0])
     when 'R'
       Rook.destination(str, self)
+    when 'N'
+      Knight.destination(str, self)
     else
       Pawn.destination(str, self)
     end

@@ -60,6 +60,10 @@ class Board
     @board[coords[0]][coords[1]].piece.is_a?(Rook)
   end
 
+  def knight?(coords)
+    @board[coords[0]][coords[1]].piece.is_a?(Knight)
+  end
+
   def empty?(coords)
     @board[coords[0]][coords[1]].piece.nil?
   end
