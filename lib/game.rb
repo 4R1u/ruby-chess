@@ -84,7 +84,7 @@ class Game
     when 'R'
       Rook.source(dst, self)
     else
-      find_source_pawn(dst, str)
+      Pawn.source(dst, str, self)
     end
   end
 
@@ -94,51 +94,6 @@ class Game
       Rook.destination(str, self)
     else
       Pawn.destination(str, self)
-    end
-  end
-
-  def find_source_pawn(dst, str)
-    if str.length > 2
-      file_number = str[0].ord - 'a'.ord
-      find_en_passant_source(dst, file_number) || find_capturing_pawn(dst, file_number)
-    elsif @board.board[dst[0]][dst[1]].piece.nil?
-      find_pawn_source_one_square_behind(dst) ||
-        find_pawn_source_two_squares_behind(dst)
-    end
-  end
-
-  def find_pawn_source_one_square_behind(dst)
-    src = [dst[0] + (current_player == 'white' ? 1 : -1), dst[1]]
-    src if @board.pawn?(src) && friend?(src)
-  end
-
-  def find_pawn_source_two_squares_behind(dst)
-    src = [dst[0] + (@current_player == 'white' ? 2 : -2), dst[1]]
-
-    src if @board.pawn?(src) && !@board.info_at(src, :moven?) &&
-           friend?(src) && @board.empty?([src[0] + forwards, src[1]])
-  end
-
-  def find_capturing_pawn(dst, file_number)
-    return unless (0..7).cover?(file_number)
-
-    src = [dst[0] + (@current_player == 'white' ? 1 : -1), file_number]
-    src if @board.pawn?(src) && friend?(src) &&
-           (dst[1] - file_number).abs == 1 &&
-           enemy?(dst)
-  end
-
-  def find_en_passant_source(dst, file_number)
-    src = [dst[0] + backwards, file_number]
-    removed = [src[0], dst[1]]
-
-    return unless @board.valid_coords?(src) &&
-                  @board.valid_coords?(dst) && enemy?(removed)
-
-    if @board.pawn?(src) && friend?(src) &&
-       (dst[1] - src[1]).abs == 1
-      @board.remove_piece(removed)
-      src
     end
   end
 end
