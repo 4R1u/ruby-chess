@@ -82,7 +82,7 @@ class Game
   def find_source(dst, str)
     case (str[0])
     when 'R'
-      find_source_rook(dst)
+      Rook.find_source(dst, self)
     else
       find_source_pawn(dst, str)
     end
@@ -92,7 +92,6 @@ class Game
     case (str[0])
     when 'R'
       Rook.destination(str, self)
-      # find_rook_destination(str)
     else
       Pawn.destination(str, self)
     end
@@ -102,51 +101,6 @@ class Game
     dst = [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
     dst if @board.valid_coords?(dst) &&
            (enemy?(dst) || (@board.empty?(dst) && !str.include?('x')))
-  end
-
-  def find_source_rook(dst)
-    up = find_source_rook_up(dst)
-    down = find_source_rook_down(dst)
-    right = find_source_rook_right(dst)
-    left = find_source_rook_left(dst)
-    uniq = [nil, up, down, right, left].uniq
-    uniq[1] if uniq.length == 2
-  end
-
-  def find_source_rook_left(dst)
-    ((dst[1] + 1)..7).each do |col|
-      coords = [dst[0], col]
-      return coords if friend?(coords) && @board.rook?(coords)
-      return nil unless @board.empty?(coords)
-    end
-    nil
-  end
-
-  def find_source_rook_right(dst)
-    (0..(dst[1] - 1)).reverse_each do |col|
-      coords = [dst[0], col]
-      return coords if friend?(coords) && @board.rook?(coords)
-      return nil unless @board.empty?(coords)
-    end
-    nil
-  end
-
-  def find_source_rook_down(dst)
-    ((dst[0] + 1)..7).each do |row|
-      coords = [row, dst[1]]
-      return coords if friend?(coords) && @board.rook?(coords)
-      return nil unless @board.empty?(coords)
-    end
-    nil
-  end
-
-  def find_source_rook_up(dst)
-    (0..(dst[0] - 1)).reverse_each do |row|
-      coords = [row, dst[1]]
-      return coords if friend?(coords) && @board.rook?(coords)
-      return nil unless @board.empty?(coords)
-    end
-    nil
   end
 
   def find_source_pawn(dst, str)
