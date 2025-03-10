@@ -25,6 +25,7 @@ Layout/LineLength:
 RSpec/NestedGroups:
   Exclude:
     - 'spec/game_spec.rb'
+    - 'spec/game_pawn_spec.rb'
 RSpec/ContextWording:
   Exclude:
     - 'spec/game_spec.rb'
