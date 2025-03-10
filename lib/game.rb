@@ -97,12 +97,6 @@ class Game
     end
   end
 
-  def find_rook_destination(str)
-    dst = [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
-    dst if @board.valid_coords?(dst) &&
-           (enemy?(dst) || (@board.empty?(dst) && !str.include?('x')))
-  end
-
   def find_source_pawn(dst, str)
     if str.length > 2
       file_number = str[0].ord - 'a'.ord
