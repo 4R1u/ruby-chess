@@ -14,7 +14,7 @@ class Knight < Piece
            (game.enemy?(dst) || (game.board.empty?(dst) && !str.include?('x')))
   end
 
-  def self.find_source(dst, game)
+  def self.source(dst, game)
     moves = [[1, 2], [2, 1], [2, -1], [1, -2],
              [-1, -2], [-2, -1], [-2, 1], [-1, 2]]
     srcs = [nil]
