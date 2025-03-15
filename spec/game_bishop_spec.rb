@@ -1,0 +1,73 @@
+# frozen_string_literal: true
+
+require_relative '../lib/game'
+
+describe Game do
+  subject(:game) { described_class.new }
+
+  context 'when moving up and to the right' do
+    before do
+      game.move 'd4'
+      game.move 'a5'
+      game.move 'Be3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][2].piece).to be_nil
+    end
+
+    it 'destination has bishop' do
+      expect(game.board.board[5][4].piece).to be_a(Bishop)
+    end
+  end
+
+  context 'when moving up and to the left' do
+    before do
+      game.move 'b4'
+      game.move 'd5'
+      game.move 'Ba3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][2].piece).to be_nil
+    end
+
+    it 'destination has bishop' do
+      expect(game.board.board[5][0].piece).to be_a(Bishop)
+    end
+  end
+
+  context 'when moving down and to the left' do
+    before do
+      game.move 'b4'
+      game.move 'b5'
+      game.move 'a4'
+      game.move 'Ba6'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[0][2].piece).to be_nil
+    end
+
+    it 'destination has bishop' do
+      expect(game.board.board[2][0].piece).to be_a(Bishop)
+    end
+  end
+
+  context 'when moving down and to the right' do
+    before do
+      game.move 'b4'
+      game.move 'd5'
+      game.move 'a4'
+      game.move 'Be6'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[0][2].piece).to be_nil
+    end
+
+    it 'destination has bishop' do
+      expect(game.board.board[2][4].piece).to be_a(Bishop)
+    end
+  end
+end

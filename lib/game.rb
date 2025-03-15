@@ -85,6 +85,8 @@ class Game
       Rook.source(dst, self)
     when 'N'
       Knight.source(dst, self)
+    when 'B'
+      Bishop.source(dst, self)
     else
       Pawn.source(dst, str, self)
     end
@@ -96,6 +98,8 @@ class Game
       Rook.destination(str, self)
     when 'N'
       Knight.destination(str, self)
+    when 'B'
+      Bishop.destination(str, self)
     else
       Pawn.destination(str, self)
     end
