@@ -70,4 +70,18 @@ describe Game do
       expect(game.board.board[2][4].piece).to be_a(Bishop)
     end
   end
+
+  context 'when trying to move over another piece' do
+    before do
+      game.move 'Be3'
+    end
+
+    it 'source has bishop' do
+      expect(game.board.board[7][2].piece).to be_a(Bishop)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[5][4].piece).to be_nil
+    end
+  end
 end
