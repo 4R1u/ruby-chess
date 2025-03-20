@@ -43,6 +43,12 @@ class Game
       (@current_player == 'white')
   end
 
+  def qualifies?(qualifier, coords, type)
+    (qualifier.nil? || qualifier == coords || (qualifier.ord - 'a'.ord) == coords[1] ||
+    ((8 - qualifier.to_i) == coords[0])) &&
+      @board.board[coords[0]][coords[1]].piece.is_a?(type) && friend?(coords)
+  end
+
   def forwards
     (@current_player == 'white' ? -1 : 1)
   end
@@ -82,7 +88,7 @@ class Game
   def find_source(dst, str)
     case (str[0])
     when 'R'
-      Rook.source(dst, self)
+      Rook.source(dst, str, self)
     when 'N'
       Knight.source(dst, self)
     when 'B'

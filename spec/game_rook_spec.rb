@@ -114,6 +114,30 @@ describe Game do
         end
       end
     end
+
+    context 'when making a disambiguated move' do
+      before do
+        game.move 'a4'
+        game.move 'b5'
+        game.move 'Ra3'
+        game.move 'a5'
+        game.move 'h4'
+        game.move 'b4'
+        game.move 'Rah3'
+      end
+
+      it 'rook on same rank is gone' do
+        expect(game.board.board[5][0].piece).to be_nil
+      end
+
+      it 'rook on same file is still there' do
+        expect(game.board.board[7][7].piece).to be_a(Rook)
+      end
+
+      it 'destination has rook' do
+        expect(game.board.board[5][7].piece).to be_a(Rook)
+      end
+    end
   end
 
   context 'when trying to move invalidly' do
@@ -217,6 +241,30 @@ describe Game do
         it 'destination has no rook' do
           expect(game.board.board[4][0].piece).not_to be_a(Rook)
         end
+      end
+    end
+
+    context 'when making an ambiguous move' do
+      before do
+        game.move 'a4'
+        game.move 'b5'
+        game.move 'Ra3'
+        game.move 'a5'
+        game.move 'h4'
+        game.move 'b4'
+        game.move 'Rh3'
+      end
+
+      it 'rook on same rank is still there' do
+        expect(game.board.board[5][0].piece).to be_a(Rook)
+      end
+
+      it 'rook on same file is still there' do
+        expect(game.board.board[7][7].piece).to be_a(Rook)
+      end
+
+      it 'destination is empty' do
+        expect(game.board.board[5][7].piece).to be_nil
       end
     end
   end

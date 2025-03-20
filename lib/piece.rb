@@ -18,4 +18,13 @@ class Piece
   def self.source
     nil
   end
+
+  def self.find_qualifier(str)
+    return if str.length <= 3
+
+    qualifier = nil
+    qualifier = str[1] if ('a'..'h').cover?(str[1])
+    qualifier += str[2] if ('1'..'8').cover?(str[2])
+    qualifier
+  end
 end

@@ -14,48 +14,49 @@ class Rook < Piece
            (game.enemy?(dst) || (game.board.empty?(dst) && !str.include?('x')))
   end
 
-  def self.source(dst, game)
-    uniq = [nil, source_up(dst, game),
-            source_down(dst, game),
-            source_right(dst, game),
-            source_left(dst, game)].uniq
+  def self.source(dst, str, game)
+    qualifier = find_qualifier(str)
+    uniq = [nil, source_up(dst, game, qualifier),
+            source_down(dst, game, qualifier),
+            source_right(dst, game, qualifier),
+            source_left(dst, game, qualifier)].uniq
     uniq[1] if uniq.length == 2
   end
 
   class << self
     private
 
-    def source_left(dst, game)
+    def source_left(dst, game, qualifier)
       ((dst[1] + 1)..7).each do |col|
         coords = [dst[0], col]
-        return coords if game.friend?(coords) && game.board.rook?(coords)
+        return coords if game.qualifies?(qualifier, coords, Rook)
         return nil unless game.board.empty?(coords)
       end
       nil
     end
 
-    def source_right(dst, game)
+    def source_right(dst, game, qualifier)
       (0..(dst[1] - 1)).reverse_each do |col|
         coords = [dst[0], col]
-        return coords if game.friend?(coords) && game.board.rook?(coords)
+        return coords if game.qualifies?(qualifier, coords, Rook)
         return nil unless game.board.empty?(coords)
       end
       nil
     end
 
-    def source_down(dst, game)
+    def source_down(dst, game, qualifier)
       ((dst[0] + 1)..7).each do |row|
         coords = [row, dst[1]]
-        return coords if game.friend?(coords) && game.board.rook?(coords)
+        return coords if game.qualifies?(qualifier, coords, Rook)
         return nil unless game.board.empty?(coords)
       end
       nil
     end
 
-    def source_up(dst, game)
+    def source_up(dst, game, qualifier)
       (0..(dst[0] - 1)).reverse_each do |row|
         coords = [row, dst[1]]
-        return coords if game.friend?(coords) && game.board.rook?(coords)
+        return coords if game.qualifies?(qualifier, coords, Rook)
         return nil unless game.board.empty?(coords)
       end
       nil
