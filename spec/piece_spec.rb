@@ -14,6 +14,10 @@ describe Piece do
       it 'returns rank' do
         expect(piece.find_qualifier('R1b3')).to eq('1')
       end
+
+      it 'returns rank and file' do
+        expect(piece.find_qualifier('Ra1b3')).to eq([7, 0])
+      end
     end
 
     context 'with a Knight'

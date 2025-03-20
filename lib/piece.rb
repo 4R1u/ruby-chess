@@ -22,10 +22,8 @@ class Piece
   def self.find_qualifier(str)
     return if str.length <= 3
 
-    qualifier = nil
-    qualifier = str[1] if ('a'..'h').cover?(str[1])
-    qualifier += str[2] if ('1'..'8').cover?(str[2])
-    qualifier = str[1] if qualifier.nil? && ('1'..'8').cover?(str[1])
-    qualifier
+    return str[1] if ('1'..'8').cover?(str[1])
+
+    ('1'..'8').cover?(str[2]) ? [8 - str[2].to_i, str[1].ord - 'a'.ord] : (str[1] if ('a'..'h').cover?(str[1]))
   end
 end
