@@ -25,6 +25,7 @@ class Piece
     qualifier = nil
     qualifier = str[1] if ('a'..'h').cover?(str[1])
     qualifier += str[2] if ('1'..'8').cover?(str[2])
+    qualifier = str[1] if qualifier.nil? && ('1'..'8').cover?(str[1])
     qualifier
   end
 end
