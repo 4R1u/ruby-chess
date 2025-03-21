@@ -21,5 +21,23 @@ describe Piece do
     it 'returns nil with no qualifier' do
       expect(piece.find_qualifier('Rc4')).to be_nil
     end
+
+    context 'when capturing' do
+      it 'returns file' do
+        expect(piece.find_qualifier('Raxb3')).to eq('a')
+      end
+
+      it 'returns rank' do
+        expect(piece.find_qualifier('N1xb3')).to eq('1')
+      end
+
+      it 'returns rank and file' do
+        expect(piece.find_qualifier('Ba1xb3')).to eq([7, 0])
+      end
+
+      it 'returns nil with no qualifier' do
+        expect(piece.find_qualifier('Rxc4')).to be_nil
+      end
+    end
   end
 end
