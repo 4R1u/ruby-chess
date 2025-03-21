@@ -39,6 +39,7 @@ class Bishop < Piece
     def source_se(dst, game, qualifier)
       (1..7).each do |offset|
         coords = [dst[0] + offset, dst[1] + offset]
+        return nil unless game.board.valid_coords?(coords)
         return coords if game.qualifies?(qualifier, coords, Bishop)
         return nil unless game.board.empty?(coords)
       end
