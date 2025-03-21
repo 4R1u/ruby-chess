@@ -267,5 +267,29 @@ describe Game do
         expect(game.board.board[5][7].piece).to be_nil
       end
     end
+
+    context 'with wrong starting file' do
+      before do
+        game.move 'a4'
+        game.move 'b5'
+        game.move 'Ra3'
+        game.move 'a5'
+        game.move 'h4'
+        game.move 'b4'
+        game.move 'Rbh3'
+      end
+
+      it 'rook on same rank is still there' do
+        expect(game.board.board[5][0].piece).to be_a(Rook)
+      end
+
+      it 'rook on same file is still there' do
+        expect(game.board.board[7][7].piece).to be_a(Rook)
+      end
+
+      it 'destination is empty' do
+        expect(game.board.board[5][7].piece).to be_nil
+      end
+    end
   end
 end
