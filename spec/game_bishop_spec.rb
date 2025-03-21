@@ -84,4 +84,36 @@ describe Game do
       expect(game.board.board[5][4].piece).to be_nil
     end
   end
+
+  context 'with rank of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'a5'
+      game.move 'B1e3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][2].piece).to be_nil
+    end
+
+    it 'destination has bishop' do
+      expect(game.board.board[5][4].piece).to be_a(Bishop)
+    end
+  end
+
+  context 'with wrong rank of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'a5'
+      game.move 'B2e3'
+    end
+
+    it 'source has bishop' do
+      expect(game.board.board[7][2].piece).to be_a(Bishop)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[5][4].piece).to be_nil
+    end
+  end
 end

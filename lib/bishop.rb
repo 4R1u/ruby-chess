@@ -14,52 +14,52 @@ class Bishop < Piece
            (game.enemy?(dst) || (game.board.empty?(dst) && !str.include?('x')))
   end
 
-  def self.source(dst, game)
-    uniq = [nil, source_ne(dst, game),
-            source_se(dst, game),
-            source_sw(dst, game),
-            source_nw(dst, game)].uniq
+  def self.source(dst, str, game)
+    qualifier = find_qualifier(str)
+    uniq = [nil, source_ne(dst, game, qualifier),
+            source_se(dst, game, qualifier),
+            source_sw(dst, game, qualifier),
+            source_nw(dst, game, qualifier)].uniq
     uniq[1] if uniq.length == 2
   end
 
   class << self
     private
 
-    def source_ne(dst, game)
+    def source_ne(dst, game, qualifier)
       (1..7).each do |offset|
         coords = [dst[0] - offset, dst[1] + offset]
         return nil unless game.board.valid_coords?(coords)
-        return coords if game.friend?(coords) && game.board.bishop?(coords)
+        return coords if game.qualifies?(qualifier, coords, Bishop)
         return nil unless game.board.empty?(coords)
       end
       nil
     end
 
-    def source_se(dst, game)
+    def source_se(dst, game, qualifier)
       (1..7).each do |offset|
         coords = [dst[0] + offset, dst[1] + offset]
-        return nil unless game.board.valid_coords?(coords)
-        return coords if game.friend?(coords) && game.board.bishop?(coords)
+        return coords if game.qualifies?(qualifier, coords, Bishop)
         return nil unless game.board.empty?(coords)
       end
       nil
     end
 
-    def source_sw(dst, game)
+    def source_sw(dst, game, qualifier)
       (1..7).each do |offset|
         coords = [dst[0] + offset, dst[1] - offset]
         return nil unless game.board.valid_coords?(coords)
-        return coords if game.friend?(coords) && game.board.bishop?(coords)
+        return coords if game.qualifies?(qualifier, coords, Bishop)
         return nil unless game.board.empty?(coords)
       end
       nil
     end
 
-    def source_nw(dst, game)
+    def source_nw(dst, game, qualifier)
       (0..7).each do |offset|
         coords = [dst[0] - offset, dst[1] - offset]
         return nil unless game.board.valid_coords?(coords)
-        return coords if game.friend?(coords) && game.board.bishop?(coords)
+        return coords if game.qualifies?(qualifier, coords, Bishop)
         return nil unless game.board.empty?(coords)
       end
       nil

@@ -92,7 +92,7 @@ class Game
     when 'N'
       Knight.source(dst, self)
     when 'B'
-      Bishop.source(dst, self)
+      Bishop.source(dst, str, self)
     else
       Pawn.source(dst, str, self)
     end
