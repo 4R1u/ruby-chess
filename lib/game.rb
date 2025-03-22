@@ -86,12 +86,12 @@ class Game
   end
 
   def find_source(dst, str)
-    piececlass = { R: Rook, N: Knight, B: Bishop, Q: Queen }[str[0].to_sym]
+    piececlass = { R: Rook, N: Knight, B: Bishop, Q: Queen, K: King }[str[0].to_sym]
     piececlass ? piececlass.source(dst, str, self) : Pawn.source(dst, str, self)
   end
 
   def find_destination(str)
-    piececlass = { R: Rook, N: Knight, B: Bishop, Q: Queen }[str[0].to_sym]
+    piececlass = { R: Rook, N: Knight, B: Bishop, Q: Queen, K: King }[str[0].to_sym]
     piececlass ? piececlass.destination(str, self) : Pawn.destination(str, self)
   end
 end
