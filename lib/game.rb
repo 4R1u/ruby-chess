@@ -90,7 +90,7 @@ class Game
     when 'R'
       Rook.source(dst, str, self)
     when 'N'
-      Knight.source(dst, self)
+      Knight.source(dst, str, self)
     when 'B'
       Bishop.source(dst, str, self)
     else

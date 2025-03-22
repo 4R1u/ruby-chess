@@ -74,4 +74,32 @@ describe Game do
       expect(game.board.board[5][2].piece).to be_nil
     end
   end
+
+  context 'with file of departure marked' do
+    before do
+      game.move 'Nbc3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][1].piece).to be_nil
+    end
+
+    it 'destination has bishop' do
+      expect(game.board.board[5][2].piece).to be_a(Knight)
+    end
+  end
+
+  context 'with wrong file of departure marked' do
+    before do
+      game.move 'Naa3'
+    end
+
+    it 'source has bishop' do
+      expect(game.board.board[7][1].piece).to be_a(Knight)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[5][0].piece).to be_nil
+    end
+  end
 end

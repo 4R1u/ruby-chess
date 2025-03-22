@@ -14,14 +14,14 @@ class Knight < Piece
            (game.enemy?(dst) || (game.board.empty?(dst) && !str.include?('x')))
   end
 
-  def self.source(dst, game)
+  def self.source(dst, str, game)
+    qualifier = find_qualifier(str)
     moves = [[1, 2], [2, 1], [2, -1], [1, -2],
              [-1, -2], [-2, -1], [-2, 1], [-1, 2]]
     srcs = [nil]
     moves.each do |move|
       src = [move[0] + dst[0], move[1] + dst[1]]
-      srcs += [src] if game.board.valid_coords?(src) &&
-                       game.board.knight?(src) && game.friend?(src)
+      srcs += [src] if game.qualifies?(qualifier, src, Knight)
     end
     srcs[1] if srcs.length == 2
   end
