@@ -86,32 +86,12 @@ class Game
   end
 
   def find_source(dst, str)
-    case (str[0])
-    when 'R'
-      Rook.source(dst, str, self)
-    when 'N'
-      Knight.source(dst, str, self)
-    when 'B'
-      Bishop.source(dst, str, self)
-    when 'Q'
-      Queen.source(dst, str, self)
-    else
-      Pawn.source(dst, str, self)
-    end
+    piececlass = { R: Rook, N: Knight, B: Bishop, Q: Queen }[str[0].to_sym]
+    piececlass ? piececlass.source(dst, str, self) : Pawn.source(dst, str, self)
   end
 
   def find_destination(str)
-    case (str[0])
-    when 'R'
-      Rook.destination(str, self)
-    when 'N'
-      Knight.destination(str, self)
-    when 'B'
-      Bishop.destination(str, self)
-    when 'Q'
-      Queen.destination(str, self)
-    else
-      Pawn.destination(str, self)
-    end
+    piececlass = { R: Rook, N: Knight, B: Bishop, Q: Queen }[str[0].to_sym]
+    piececlass ? piececlass.destination(str, self) : Pawn.destination(str, self)
   end
 end
