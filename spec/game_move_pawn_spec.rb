@@ -2,7 +2,7 @@
 
 require_relative '../lib/game'
 
-describe Game do
+describe Game, '#move' do
   subject(:game) { described_class.new }
 
   context 'when white pawn moves forward one square' do
