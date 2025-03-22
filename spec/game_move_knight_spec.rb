@@ -84,7 +84,7 @@ describe Game, '#move' do
       expect(game.board.board[7][1].piece).to be_nil
     end
 
-    it 'destination has bishop' do
+    it 'destination has knight' do
       expect(game.board.board[5][2].piece).to be_a(Knight)
     end
   end
@@ -94,7 +94,7 @@ describe Game, '#move' do
       game.move 'Naa3'
     end
 
-    it 'source has bishop' do
+    it 'source has knight' do
       expect(game.board.board[7][1].piece).to be_a(Knight)
     end
 
