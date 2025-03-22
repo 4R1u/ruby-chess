@@ -14,7 +14,7 @@ class Bishop < Piece
            (game.enemy?(dst) || (game.board.empty?(dst) && !str.include?('x')))
   end
 
-  def self.source(dst, str, game, type = Bishop)
+  def self.source(dst, str, game, type = self)
     qualifier = find_qualifier(str)
     uniq = [nil, source_ne(dst, game, qualifier, type),
             source_se(dst, game, qualifier, type),
