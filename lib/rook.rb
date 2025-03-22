@@ -14,52 +14,48 @@ class Rook < Piece
            (game.enemy?(dst) || (game.board.empty?(dst) && !str.include?('x')))
   end
 
-  def self.source(dst, str, game)
+  def self.source(dst, str, game, type = Rook)
     qualifier = find_qualifier(str)
-    uniq = [nil, source_up(dst, game, qualifier),
-            source_down(dst, game, qualifier),
-            source_right(dst, game, qualifier),
-            source_left(dst, game, qualifier)].uniq
+    uniq = [nil, source_up(dst, game, qualifier, type),
+            source_down(dst, game, qualifier, type),
+            source_right(dst, game, qualifier, type),
+            source_left(dst, game, qualifier, type)].uniq
     uniq[1] if uniq.length == 2
   end
 
-  class << self
-    private
-
-    def source_left(dst, game, qualifier)
-      ((dst[1] + 1)..7).each do |col|
-        coords = [dst[0], col]
-        return coords if game.qualifies?(qualifier, coords, Rook)
-        return nil unless game.board.empty?(coords)
-      end
-      nil
+  def self.source_left(dst, game, qualifier, type)
+    ((dst[1] + 1)..7).each do |col|
+      coords = [dst[0], col]
+      return coords if game.qualifies?(qualifier, coords, type)
+      return nil unless game.board.empty?(coords)
     end
+    nil
+  end
 
-    def source_right(dst, game, qualifier)
-      (0..(dst[1] - 1)).reverse_each do |col|
-        coords = [dst[0], col]
-        return coords if game.qualifies?(qualifier, coords, Rook)
-        return nil unless game.board.empty?(coords)
-      end
-      nil
+  def self.source_right(dst, game, qualifier, type)
+    (0..(dst[1] - 1)).reverse_each do |col|
+      coords = [dst[0], col]
+      return coords if game.qualifies?(qualifier, coords, type)
+      return nil unless game.board.empty?(coords)
     end
+    nil
+  end
 
-    def source_down(dst, game, qualifier)
-      ((dst[0] + 1)..7).each do |row|
-        coords = [row, dst[1]]
-        return coords if game.qualifies?(qualifier, coords, Rook)
-        return nil unless game.board.empty?(coords)
-      end
-      nil
+  def self.source_down(dst, game, qualifier, type)
+    ((dst[0] + 1)..7).each do |row|
+      coords = [row, dst[1]]
+      return coords if game.qualifies?(qualifier, coords, type)
+      return nil unless game.board.empty?(coords)
     end
+    nil
+  end
 
-    def source_up(dst, game, qualifier)
-      (0..(dst[0] - 1)).reverse_each do |row|
-        coords = [row, dst[1]]
-        return coords if game.qualifies?(qualifier, coords, Rook)
-        return nil unless game.board.empty?(coords)
-      end
-      nil
+  def self.source_up(dst, game, qualifier, type)
+    (0..(dst[0] - 1)).reverse_each do |row|
+      coords = [row, dst[1]]
+      return coords if game.qualifies?(qualifier, coords, type)
+      return nil unless game.board.empty?(coords)
     end
+    nil
   end
 end
