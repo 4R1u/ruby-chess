@@ -124,4 +124,18 @@ describe Game, '#move' do
       expect(game.board.board[4][0].piece).to be_a(Queen)
     end
   end
+
+  context 'when trying to move over a piece' do
+    before do
+      game.move 'Qd3'
+    end
+
+    it 'source has queen' do
+      expect(game.board.board[7][3].piece).to be_a(Queen)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[5][0].piece).to be_nil
+    end
+  end
 end
