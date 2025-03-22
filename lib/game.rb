@@ -93,6 +93,8 @@ class Game
       Knight.source(dst, str, self)
     when 'B'
       Bishop.source(dst, str, self)
+    when 'Q'
+      Queen.source(dst, str, self)
     else
       Pawn.source(dst, str, self)
     end
@@ -106,6 +108,8 @@ class Game
       Knight.destination(str, self)
     when 'B'
       Bishop.destination(str, self)
+    when 'Q'
+      Queen.destination(str, self)
     else
       Pawn.destination(str, self)
     end
