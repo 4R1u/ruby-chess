@@ -14,56 +14,52 @@ class Bishop < Piece
            (game.enemy?(dst) || (game.board.empty?(dst) && !str.include?('x')))
   end
 
-  def self.source(dst, str, game)
+  def self.source(dst, str, game, type = Bishop)
     qualifier = find_qualifier(str)
-    uniq = [nil, source_ne(dst, game, qualifier),
-            source_se(dst, game, qualifier),
-            source_sw(dst, game, qualifier),
-            source_nw(dst, game, qualifier)].uniq
+    uniq = [nil, source_ne(dst, game, qualifier, type),
+            source_se(dst, game, qualifier, type),
+            source_sw(dst, game, qualifier, type),
+            source_nw(dst, game, qualifier, type)].uniq
     uniq[1] if uniq.length == 2
   end
 
-  class << self
-    private
-
-    def source_ne(dst, game, qualifier)
-      (1..7).each do |offset|
-        coords = [dst[0] - offset, dst[1] + offset]
-        return nil unless game.board.valid_coords?(coords)
-        return coords if game.qualifies?(qualifier, coords, Bishop)
-        return nil unless game.board.empty?(coords)
-      end
-      nil
+  def self.source_ne(dst, game, qualifier, type)
+    (1..7).each do |offset|
+      coords = [dst[0] - offset, dst[1] + offset]
+      return nil unless game.board.valid_coords?(coords)
+      return coords if game.qualifies?(qualifier, coords, type)
+      return nil unless game.board.empty?(coords)
     end
+    nil
+  end
 
-    def source_se(dst, game, qualifier)
-      (1..7).each do |offset|
-        coords = [dst[0] + offset, dst[1] + offset]
-        return nil unless game.board.valid_coords?(coords)
-        return coords if game.qualifies?(qualifier, coords, Bishop)
-        return nil unless game.board.empty?(coords)
-      end
-      nil
+  def self.source_se(dst, game, qualifier, type)
+    (1..7).each do |offset|
+      coords = [dst[0] + offset, dst[1] + offset]
+      return nil unless game.board.valid_coords?(coords)
+      return coords if game.qualifies?(qualifier, coords, type)
+      return nil unless game.board.empty?(coords)
     end
+    nil
+  end
 
-    def source_sw(dst, game, qualifier)
-      (1..7).each do |offset|
-        coords = [dst[0] + offset, dst[1] - offset]
-        return nil unless game.board.valid_coords?(coords)
-        return coords if game.qualifies?(qualifier, coords, Bishop)
-        return nil unless game.board.empty?(coords)
-      end
-      nil
+  def self.source_sw(dst, game, qualifier, type)
+    (1..7).each do |offset|
+      coords = [dst[0] + offset, dst[1] - offset]
+      return nil unless game.board.valid_coords?(coords)
+      return coords if game.qualifies?(qualifier, coords, type)
+      return nil unless game.board.empty?(coords)
     end
+    nil
+  end
 
-    def source_nw(dst, game, qualifier)
-      (0..7).each do |offset|
-        coords = [dst[0] - offset, dst[1] - offset]
-        return nil unless game.board.valid_coords?(coords)
-        return coords if game.qualifies?(qualifier, coords, Bishop)
-        return nil unless game.board.empty?(coords)
-      end
-      nil
+  def self.source_nw(dst, game, qualifier, type)
+    (0..7).each do |offset|
+      coords = [dst[0] - offset, dst[1] - offset]
+      return nil unless game.board.valid_coords?(coords)
+      return coords if game.qualifies?(qualifier, coords, type)
+      return nil unless game.board.empty?(coords)
     end
+    nil
   end
 end
