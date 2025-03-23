@@ -31,6 +31,7 @@ class Game
     @board.move_piece(src, dst)
     @current_player = %w[white black].find { |player| player != @current_player }
     @moves << str
+    nil
   end
 
   def friend?(coords)
@@ -117,5 +118,14 @@ class Game
                                                              .piece.is_a?(King)
       end
     end
+  end
+
+  def would_be_check?(src, dst)
+    piece_at_dst = @board.board[dst[0]][dst[1]].piece
+    @board.move_piece(src, dst)
+    result = check?
+    @board.move_piece(dst, src)
+    @board.place_piece(dst, piece_at_dst)
+    result
   end
 end
