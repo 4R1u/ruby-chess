@@ -11,8 +11,10 @@ class Piece
     @info = {}
   end
 
-  def self.destination
-    nil
+  def self.destination(str, game)
+    dst = [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
+    dst if game.board.valid_coords?(dst) &&
+           (game.enemy?(dst) || (game.board.empty?(dst) && !str.include?('x')))
   end
 
   def self.source
