@@ -46,7 +46,7 @@ class Game
   def qualifies?(qualifier, coords, type)
     (qualifier.nil? || qualifier == coords || (qualifier.ord - 'a'.ord) == coords[1] ||
     ((8 - qualifier.to_i) == coords[0])) &&
-      @board.board[coords[0]][coords[1]].piece.is_a?(type) && friend?(coords)
+      @board.valid_coords?(coords) && @board.board[coords[0]][coords[1]].piece.is_a?(type) && friend?(coords)
   end
 
   def forwards
@@ -55,6 +55,20 @@ class Game
 
   def backwards
     (@current_player == 'white' ? 1 : -1)
+  end
+
+  def check?
+    king_location = find_king
+    @current_player = %w[white black].find { |player| player != @current_player }
+    ['', 'R', 'N', 'B', 'Q', 'K'].each do |letter|
+      dst = find_destination(letter + king_location)
+      if find_source(dst, letter + king_location)
+        @current_player = %w[white black].find { |player| player != @current_player }
+        return true
+      end
+    end
+    @current_player = %w[white black].find { |player| player != @current_player }
+    false
   end
 
   private
@@ -93,5 +107,15 @@ class Game
   def find_destination(str)
     piececlass = { R: Rook, N: Knight, B: Bishop, Q: Queen, K: King }[str[0].to_sym]
     piececlass ? piececlass.destination(str, self) : Pawn.destination(str, self)
+  end
+
+  def find_king
+    (0..7).each do |row|
+      (0..7).each do |col|
+        return ('a'.ord + col).chr + (8 - row).to_s if friend?([row, col]) &&
+                                                       @board.board[row][col]
+                                                             .piece.is_a?(King)
+      end
+    end
   end
 end
