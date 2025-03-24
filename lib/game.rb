@@ -27,6 +27,8 @@ class Game
     src = find_source(dst, str) if dst
     return unless src && dst
 
+    return if would_be_check?(src, dst)
+
     @board.info_at(src, :moven?, @moves.length)
     @board.move_piece(src, dst)
     @current_player = %w[white black].find { |player| player != @current_player }
