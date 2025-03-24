@@ -193,6 +193,18 @@ describe Game, '#move' do
     end
   end
 
+  context 'when trying to move off the board' do
+    before do
+      game.move '`0'
+      game.move 'i9'
+      game.move '`1'
+    end
+
+    it "is still white's turn" do
+      expect(game.current_player).to eq('white')
+    end
+  end
+
   context 'when capturing' do
     context 'when white pawn captures black pawn normally' do
       before do

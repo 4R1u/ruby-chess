@@ -11,7 +11,7 @@ class Pawn < Piece
   def self.destination(str, game)
     gstr = str.sub(' e.p.', '')
     dst = [8 - gstr[-1].to_i, gstr[-2].ord - 'a'.ord]
-    dst unless game.friend?(dst)
+    dst if game.board.valid_coords?(dst) && !game.friend?(dst)
   end
 
   def self.source(dst, str, game)

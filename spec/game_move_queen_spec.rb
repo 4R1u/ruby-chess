@@ -138,4 +138,16 @@ describe Game, '#move' do
       expect(game.board.board[5][0].piece).to be_nil
     end
   end
+
+  context 'when trying to move off the board' do
+    before do
+      game.move 'Q`0'
+      game.move 'Qi9'
+      game.move 'Q`1'
+    end
+
+    it "is still white's turn" do
+      expect(game.current_player).to eq('white')
+    end
+  end
 end

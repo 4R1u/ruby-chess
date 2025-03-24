@@ -64,8 +64,7 @@ class Game
     king_location = find_king
     @current_player = %w[white black].find { |player| player != @current_player }
     ['', 'R', 'N', 'B', 'Q', 'K'].each do |letter|
-      dst = find_destination(letter + king_location)
-      if find_source(dst, letter + king_location)
+      if find_source(find_destination(letter + king_location), letter + king_location)
         @current_player = %w[white black].find { |player| player != @current_player }
         return true
       end
@@ -108,8 +107,8 @@ class Game
   end
 
   def find_destination(str)
-    piececlass = { R: Rook, N: Knight, B: Bishop, Q: Queen, K: King }[str[0].to_sym]
-    piececlass ? piececlass.destination(str, self) : Pawn.destination(str, self)
+    dst = (%w[R N B R Q K].include?(str[0]) ? Piece : Pawn).destination(str, self)
+    dst if dst.is_a?(Array) && (0..7).cover?(dst[0]) && (0..7).cover?(dst[1])
   end
 
   def find_king
