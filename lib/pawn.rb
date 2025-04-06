@@ -10,6 +10,7 @@ class Pawn < Piece
 
   def self.destination(str, game)
     gstr = str.sub(' e.p.', '')
+    gstr = gstr.sub('+', '') if gstr[-1] == '+'
     dst = [8 - gstr[-1].to_i, gstr[-2].ord - 'a'.ord]
     dst if game.board.valid_coords?(dst) && !game.friend?(dst)
   end

@@ -12,9 +12,10 @@ class Piece
   end
 
   def self.destination(str, game)
-    dst = [8 - str[-1].to_i, str[-2].ord - 'a'.ord]
+    gstr = str.sub('+', '')
+    dst = [8 - gstr[-1].to_i, gstr[-2].ord - 'a'.ord]
     dst if game.board.valid_coords?(dst) &&
-           (game.enemy?(dst) || (game.board.empty?(dst) && !str.include?('x')))
+           (game.enemy?(dst) || (game.board.empty?(dst) && !gstr.include?('x')))
   end
 
   def self.source
@@ -22,10 +23,15 @@ class Piece
   end
 
   def self.find_qualifier(str)
-    return if str.length <= 3
+    gstr = str[-1] == '+' ? str.sub('+', '') : str
+    return if gstr.length <= 3
 
-    return str[1] if ('1'..'8').cover?(str[1])
+    return gstr[1] if ('1'..'8').cover?(gstr[1])
 
-    ('1'..'8').cover?(str[2]) ? [8 - str[2].to_i, str[1].ord - 'a'.ord] : (str[1] if ('a'..'h').cover?(str[1]))
+    find_non_rank_qualifier(gstr)
+  end
+
+  def self.find_non_rank_qualifier(gstr)
+    ('1'..'8').cover?(gstr[2]) ? [8 - gstr[2].to_i, gstr[1].ord - 'a'.ord] : (gstr[1] if ('a'..'h').cover?(gstr[1]))
   end
 end
