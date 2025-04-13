@@ -27,7 +27,7 @@ class Game
     src = find_source(dst, str) if dst
     return unless src && dst
 
-    return if would_be_check?(src, dst)
+    return if would_be_check?(src, dst) || !valid_check?(src, dst, str)
 
     @board.info_at(src, :moven?, @moves.length)
     @board.move_piece(src, dst)
@@ -127,6 +127,19 @@ class Game
     result = check?
     @board.move_piece(dst, src)
     @board.place_piece(dst, piece_at_dst)
+    result
+  end
+
+  def valid_check?(src, dst, str)
+    return true unless str[-1] == '+'
+
+    piece_at_dst = @board.board[dst[0]][dst[1]].piece
+    @board.move_piece(src, dst)
+    @current_player = %w[white black].find { |player| player != @current_player }
+    result = check?
+    @board.move_piece(dst, src)
+    @board.place_piece(dst, piece_at_dst)
+    @current_player = %w[white black].find { |player| player != @current_player }
     result
   end
 end
