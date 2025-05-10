@@ -117,6 +117,70 @@ describe Game, '#move' do
     end
   end
 
+  context 'with file of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'a5'
+      game.move 'Bce3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][2].piece).to be_nil
+    end
+
+    it 'destination has bishop' do
+      expect(game.board.board[5][4].piece).to be_a(Bishop)
+    end
+  end
+
+  context 'with wrong file of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'a5'
+      game.move 'Bbe3'
+    end
+
+    it 'source has bishop' do
+      expect(game.board.board[7][2].piece).to be_a(Bishop)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[5][4].piece).to be_nil
+    end
+  end
+
+  context 'with square of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'a5'
+      game.move 'Bc1e3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][2].piece).to be_nil
+    end
+
+    it 'destination has bishop' do
+      expect(game.board.board[5][4].piece).to be_a(Bishop)
+    end
+  end
+
+  context 'with wrong square of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'a5'
+      game.move 'Bb2e3'
+    end
+
+    it 'source has bishop' do
+      expect(game.board.board[7][2].piece).to be_a(Bishop)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[5][4].piece).to be_nil
+    end
+  end
+
   context 'when trying to move off the board' do
     before do
       game.move 'B`0'

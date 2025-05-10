@@ -47,7 +47,13 @@ class Game
   end
 
   def qualifies?(qualifier, coords, type)
-    (qualifier.nil? || qualifier == coords || (qualifier.ord - 'a'.ord) == coords[1] ||
+    if qualifier.is_a?(Array)
+      return qualifier == coords && @board.valid_coords?(coords) &&
+             @board.board[coords[0]][coords[1]].piece.is_a?(type) &&
+             friend?(coords)
+    end
+
+    (qualifier.nil? || (qualifier.ord - 'a'.ord) == coords[1] ||
     ((8 - qualifier.to_i) == coords[0])) &&
       @board.valid_coords?(coords) && @board.board[coords[0]][coords[1]].piece.is_a?(type) && friend?(coords)
   end

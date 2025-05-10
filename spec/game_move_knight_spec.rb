@@ -103,6 +103,62 @@ describe Game, '#move' do
     end
   end
 
+  context 'with rank of departure marked' do
+    before do
+      game.move 'N1c3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][1].piece).to be_nil
+    end
+
+    it 'destination has knight' do
+      expect(game.board.board[5][2].piece).to be_a(Knight)
+    end
+  end
+
+  context 'with wrong rank of departure marked' do
+    before do
+      game.move 'N2a3'
+    end
+
+    it 'source has knight' do
+      expect(game.board.board[7][1].piece).to be_a(Knight)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[5][0].piece).to be_nil
+    end
+  end
+
+  context 'with square of departure marked' do
+    before do
+      game.move 'Nb1c3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][1].piece).to be_nil
+    end
+
+    it 'destination has knight' do
+      expect(game.board.board[5][2].piece).to be_a(Knight)
+    end
+  end
+
+  context 'with wrong square of departure marked' do
+    before do
+      game.move 'Na2a3'
+    end
+
+    it 'source has knight' do
+      expect(game.board.board[7][1].piece).to be_a(Knight)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[5][0].piece).to be_nil
+    end
+  end
+
   context 'when trying to move off the board' do
     before do
       game.move 'N`0'

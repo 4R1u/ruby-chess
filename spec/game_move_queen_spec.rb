@@ -150,4 +150,100 @@ describe Game, '#move' do
       expect(game.current_player).to eq('white')
     end
   end
+
+  context 'with rank of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'd5'
+      game.move 'Q1d3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][3].piece).to be_nil
+    end
+
+    it 'destination has queen' do
+      expect(game.board.board[5][3].piece).to be_a Queen
+    end
+  end
+
+  context 'with wrong rank of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'd5'
+      game.move 'Q2d3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][3].piece).to be_a Queen
+    end
+
+    it 'destination has queen' do
+      expect(game.board.board[5][3].piece).to be_nil
+    end
+  end
+
+  context 'with file of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'd5'
+      game.move 'Qdd3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][3].piece).to be_nil
+    end
+
+    it 'destination has queen' do
+      expect(game.board.board[5][3].piece).to be_a Queen
+    end
+  end
+
+  context 'with wrong file of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'd5'
+      game.move 'Qed3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][3].piece).to be_a Queen
+    end
+
+    it 'destination has queen' do
+      expect(game.board.board[5][3].piece).to be_nil
+    end
+  end
+
+  context 'with square of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'd5'
+      game.move 'Qd1d3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][3].piece).to be_nil
+    end
+
+    it 'destination has queen' do
+      expect(game.board.board[5][3].piece).to be_a Queen
+    end
+  end
+
+  context 'with wrong square of departure marked' do
+    before do
+      game.move 'd4'
+      game.move 'd5'
+      game.move 'Qe2d3'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][3].piece).to be_a Queen
+    end
+
+    it 'destination has queen' do
+      expect(game.board.board[5][3].piece).to be_nil
+    end
+  end
 end

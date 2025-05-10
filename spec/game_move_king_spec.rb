@@ -81,7 +81,7 @@ describe Game, '#move' do
     end
   end
 
-  context 'with file of departure marked' do
+  context 'with rank of departure marked' do
     before do
       game.move 'e4'
       game.move 'e5'
@@ -97,11 +97,75 @@ describe Game, '#move' do
     end
   end
 
-  context 'with wrong file of departure marked' do
+  context 'with wrong rank of departure marked' do
     before do
       game.move 'e4'
       game.move 'e5'
       game.move 'K3e2'
+    end
+
+    it 'source has king' do
+      expect(game.board.board[7][4].piece).to be_a(King)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[6][4].piece).to be_nil
+    end
+  end
+
+  context 'with file of departure marked' do
+    before do
+      game.move 'e4'
+      game.move 'e5'
+      game.move 'Kee2'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][4].piece).to be_nil
+    end
+
+    it 'destination has king' do
+      expect(game.board.board[6][4].piece).to be_a(King)
+    end
+  end
+
+  context 'with wrong file of departure marked' do
+    before do
+      game.move 'e4'
+      game.move 'e5'
+      game.move 'Kde2'
+    end
+
+    it 'source has king' do
+      expect(game.board.board[7][4].piece).to be_a(King)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[6][4].piece).to be_nil
+    end
+  end
+
+  context 'with square of departure marked' do
+    before do
+      game.move 'e4'
+      game.move 'e5'
+      game.move 'Ke1e2'
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[7][4].piece).to be_nil
+    end
+
+    it 'destination has king' do
+      expect(game.board.board[6][4].piece).to be_a(King)
+    end
+  end
+
+  context 'with wrong square of departure marked' do
+    before do
+      game.move 'e4'
+      game.move 'e5'
+      game.move 'Kd2e2'
     end
 
     it 'source has king' do
