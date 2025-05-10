@@ -16,6 +16,11 @@ class Pawn < Piece
   end
 
   def self.source(dst, str, game)
+    src = find_source(dst, str, game)
+    src if src && game.qualifies?(find_qualifier(str), src, Pawn)
+  end
+
+  def self.find_source(dst, str, game)
     if str.length > 2
       file_number = str[0].ord - 'a'.ord
       en_passant_source(dst, file_number, game) ||

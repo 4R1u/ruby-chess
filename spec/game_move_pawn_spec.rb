@@ -226,6 +226,20 @@ describe Game, '#move' do
         end
       end
 
+      context 'with the x abbreviation, and square of departure marked' do
+        before do
+          game.move('e5dxe5')
+        end
+
+        it 'pawn at destination is white' do
+          expect(game.board.board[3][4].piece.black).to be(false)
+        end
+
+        it 'source is empty' do
+          expect(game.board.board[4][3].piece).to be_nil
+        end
+      end
+
       context 'without the x abbreviation' do
         before do
           game.move('de5')
@@ -482,6 +496,24 @@ describe Game, '#move' do
         context 'without e.p. notation' do
           before do
             game.move('exf6')
+          end
+
+          it 'pawn at destination is white' do
+            expect(game.board.board[2][5].piece.black).to be(false)
+          end
+
+          it 'source is empty' do
+            expect(game.board.board[3][4].piece).to be_nil
+          end
+
+          it 'black pawn captured' do
+            expect(game.board.board[3][5].piece).to be_nil
+          end
+        end
+
+        context 'with e.p. notation with square of departure marked' do
+          before do
+            game.move('e5xf6 e.p.')
           end
 
           it 'pawn at destination is white' do
