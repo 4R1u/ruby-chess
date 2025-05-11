@@ -228,7 +228,7 @@ describe Game, '#move' do
 
       context 'with the x abbreviation, and square of departure marked' do
         before do
-          game.move('e5dxe5')
+          game.move('d4xe5')
         end
 
         it 'pawn at destination is white' do
