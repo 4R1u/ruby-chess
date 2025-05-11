@@ -29,6 +29,39 @@ describe Game, '#move' do
     end
   end
 
+  context 'when white tries to move their king into a double check' do
+    before do
+      game.move 'e4'
+      game.move 'a5'
+      game.move 'e5'
+      game.move 'h5'
+      game.move 'Ke2'
+      game.move 'Ra6'
+      game.move 'Ke3'
+      game.move 'Rhh6'
+      game.move 'Ke4'
+      game.move 'a4'
+      game.move 'e6'
+      game.move 'h4'
+      game.move 'a3'
+      game.move 'Ra5'
+      game.move 'Rhh5'
+      game.move 'Ke5'
+    end
+
+    it 'source has king' do
+      expect(game.board.board[4][4].piece).to be_a(King)
+    end
+
+    it 'destination is empty' do
+      expect(game.board.board[3][4].piece).to be_nil
+    end
+
+    it "is still white's turn" do
+      expect(game.current_player).to eq('white')
+    end
+  end
+
   context 'when white makes a move that puts black in check' do
     before do
       game.move 'Nc3'

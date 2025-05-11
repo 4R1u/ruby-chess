@@ -69,10 +69,16 @@ class Game
   def check?
     king_location = find_king
     @current_player = %w[white black].find { |player| player != @current_player }
-    ['', 'R', 'N', 'B', 'Q', 'K'].each do |letter|
-      if find_source(find_destination(letter + king_location), letter + king_location)
-        @current_player = %w[white black].find { |player| player != @current_player }
-        return true
+    ('a'..'h').each do |file|
+      ('1'..'8').each do |rank|
+        piece_type = @board.board[8 - rank.to_i][file.ord - 'a'.ord].piece&.letter
+        next unless piece_type
+
+        str = "#{piece_type}#{file}#{rank}x#{king_location}"
+        if find_source(find_destination(str), str)
+          @current_player = %w[white black].find { |player| player != @current_player }
+          return true
+        end
       end
     end
     @current_player = %w[white black].find { |player| player != @current_player }
