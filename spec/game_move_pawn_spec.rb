@@ -572,5 +572,46 @@ describe Game, '#move' do
         end
       end
     end
+
+    context 'when using an en passant when getting out of check' do
+      before do
+        # 1. e4 d5
+        # 2. Ke2 d4
+        # 3. Kf3 d3
+        # 4. Kf4 dxc2
+        # 5. h4 e6
+        # 6. h5 g5+
+        # 7. hxg6
+        game.move 'e4'
+        game.move 'd5'
+        game.move 'Ke2'
+        game.move 'd4'
+        game.move 'Kf3'
+        game.move 'd3'
+        game.move 'Kf4'
+        game.move 'dxc2'
+        game.move 'h4'
+        game.move 'e6'
+        game.move 'h5'
+        game.move 'g5'
+        game.move 'hxg6'
+      end
+
+      it 'king is no longer in check' do
+        expect(game).not_to be_check
+      end
+
+      it 'destination has pawn' do
+        expect(game.board.board[2][6].piece).to be_a(Pawn)
+      end
+
+      it 'source is empty' do
+        expect(game.board.board[3][7].piece).to be_nil
+      end
+
+      it 'square which had the black pawn is empty' do
+        expect(game.board.board[3][6].piece).to be_nil
+      end
+    end
   end
 end
