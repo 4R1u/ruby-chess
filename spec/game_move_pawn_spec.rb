@@ -613,5 +613,46 @@ describe Game, '#move' do
         expect(game.board.board[3][6].piece).to be_nil
       end
     end
+
+    context 'when trying to en passant into check' do
+      # 1. e4 a6 2. Ke2 a5 3. Kf3 a4 4. e5 Ra5 5. Kg4 a3 6. Kg5 f5
+      before do
+        game.move 'e4'
+        game.move 'a6'
+
+        game.move 'Ke2'
+        game.move 'a5'
+
+        game.move 'Kf3'
+        game.move 'a4'
+
+        game.move 'e5'
+        game.move 'Ra5'
+
+        game.move 'Kg4'
+        game.move 'a3'
+
+        game.move 'Kg5'
+        game.move 'f5'
+
+        game.move 'exf6'
+      end
+
+      it 'capturing pawn is at source' do
+        expect(game.board.board[3][4].piece).to be_a Pawn
+      end
+
+      it 'captured pawn still exists' do
+        expect(game.board.board[3][5].piece).to be_a Pawn
+      end
+
+      it 'destination is empty' do
+        expect(game.board.board[2][5].piece).to be_nil
+      end
+
+      it 'king is not in check' do
+        expect(game).not_to be_check
+      end
+    end
   end
 end

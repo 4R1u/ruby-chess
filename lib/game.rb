@@ -23,17 +23,32 @@ class Game
   end
 
   def move(str)
-    dst = find_destination(str)
-    src = find_source(dst, str) if dst
-    return unless src && dst
+    newgame = Game.new
+    @moves.each { |move| newgame.move_unvalidated(move) }
+    newgame.move_unvalidated(str)
 
-    return if would_be_check?(src, dst) || !valid_check?(src, dst, str)
+    return if newgame.checking? || newgame.current_player == @current_player ||
+              (str.include?('+') && !newgame.check?)
+
+    # I have NO clue why check and checking check for opposite checks
+
+    @board = newgame.board
+    @moves << str
+    @current_player = newgame.current_player
+  end
+
+  def move_unvalidated(str)
+    dst = find_destination(str)
+    return unless dst && @board.valid_coords?(dst)
+
+    src = find_source(dst, str)
+
+    return unless src && @board.valid_coords?(src)
 
     @board.info_at(src, :moven?, @moves.length)
     @board.move_piece(src, dst)
-    @current_player = %w[white black].find { |player| player != @current_player }
     @moves << str
-    nil
+    @current_player = %w[white black].find { |color| color != @current_player }
   end
 
   def friend?(coords)
@@ -85,6 +100,22 @@ class Game
     false
   end
 
+  def checking?
+    @current_player = %w[white black].find { |player| player != @current_player }
+    king_location = find_king
+    @current_player = %w[white black].find { |player| player != @current_player }
+    ('a'..'h').each do |file|
+      ('1'..'8').each do |rank|
+        piece_type = @board.board[8 - rank.to_i][file.ord - 'a'.ord].piece&.letter
+        next unless piece_type
+
+        str = "#{piece_type}#{file}#{rank}x#{king_location}"
+        return true if find_source(find_destination(str), str)
+      end
+    end
+    false
+  end
+
   private
 
   def setup_board
@@ -131,27 +162,5 @@ class Game
                                                              .piece.is_a?(King)
       end
     end
-  end
-
-  def would_be_check?(src, dst)
-    piece_at_dst = @board.board[dst[0]][dst[1]].piece
-    @board.move_piece(src, dst)
-    result = check?
-    @board.move_piece(dst, src)
-    @board.place_piece(dst, piece_at_dst)
-    result
-  end
-
-  def valid_check?(src, dst, str)
-    return true unless str[-1] == '+'
-
-    piece_at_dst = @board.board[dst[0]][dst[1]].piece
-    @board.move_piece(src, dst)
-    @current_player = %w[white black].find { |player| player != @current_player }
-    result = check?
-    @board.move_piece(dst, src)
-    @board.place_piece(dst, piece_at_dst)
-    @current_player = %w[white black].find { |player| player != @current_player }
-    result
   end
 end
