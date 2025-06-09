@@ -17,9 +17,9 @@ class Square
 
   def output
     if @dark
-      print "\e[0;30;45m#{@piece.is_a?(Piece) ? @piece.char : ' '} \e[0m"
+      print "\e[0;30;45m#{@piece.is_a?(Piece) ? @piece.char.encode('UTF-8') : ' '} \e[0m"
     else
-      print "\e[0;30;47m#{@piece.is_a?(Piece) ? @piece.char : ' '} \e[0m"
+      print "\e[0;30;47m#{@piece.is_a?(Piece) ? @piece.char.encode('UTF-8') : ' '} \e[0m"
     end
   end
 end
