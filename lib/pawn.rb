@@ -59,7 +59,7 @@ class Pawn < Piece
       src = [dst[0] + game.backwards, file_number]
       removed = [src[0], dst[1]]
 
-      return unless game.board.valid_coords?(src) &&
+      return unless game.board.valid_coords?(src) && game.board.info_at(removed, :moven?) == game.moves.length - 1 &&
                     game.board.valid_coords?(dst) && game.enemy?(removed)
 
       if game.board.pawn?(src) && game.friend?(src) &&

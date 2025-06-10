@@ -654,5 +654,30 @@ describe Game, '#move' do
         expect(game).not_to be_check
       end
     end
+
+    context 'when trying to en passant after it is valid' do
+      # 1. a4 h5 2. a5 b5 3. b3 h4
+      before do
+        game.move 'a4'
+        game.move 'h5'
+        game.move 'a5'
+        game.move 'b5'
+        game.move 'b3'
+        game.move 'h4'
+        game.move 'axb6'
+      end
+
+      it 'capturing pawn is still at source' do
+        expect(game.board.board[3][0].piece).to be_a Pawn
+      end
+
+      it 'capturee pawn still exists' do
+        expect(game.board.board[3][1].piece).to be_a Pawn
+      end
+
+      it 'destination is empty' do
+        expect(game.board.board[2][1].piece).to be_nil
+      end
+    end
   end
 end

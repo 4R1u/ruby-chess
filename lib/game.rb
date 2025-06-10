@@ -13,7 +13,7 @@ require_relative 'board'
 # A hopefully near-blackbox match of chess
 # but which exposes the board for easy access.
 class Game
-  attr_reader :board, :current_player
+  attr_reader :board, :current_player, :moves
 
   def initialize
     @board = Board.new
