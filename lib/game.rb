@@ -38,6 +38,8 @@ class Game
   end
 
   def move_unvalidated(str)
+    return castle(str) if str[0] == 'O'
+
     dst = find_destination(str)
     return unless dst && @board.valid_coords?(dst)
 
@@ -162,5 +164,43 @@ class Game
                                                              .piece.is_a?(King)
       end
     end
+  end
+
+  def castle(str)
+    row = @current_player == 'white' ? 7 : 0
+    return unless @board.board[row][4].piece.is_a?(King) && ['O-O-O', 'O-O'].include?(str)
+
+    return unless str == 'O-O' ? castle_kingside(row) : castle_queenside(row)
+
+    @moves << str
+    @current_player = %w[white black].find { |color| color != @current_player }
+  end
+
+  def castle_kingside(row)
+    return false if @board.info_at([row, 7], :moven?) || @board.info_at([row, 4], :moven?)
+
+    return false unless find_source([row, 5], @current_player == 'white' ? 'Rh1f1' : 'Rh1f8')
+
+    @board.move_piece([row, 7], [row, 5])
+    @board.move_piece([row, 4], [row, 6])
+
+    @board.info_at([row, 5], :moven?, @moves.length)
+    @board.info_at([row, 6], :moven?, @moves.length)
+
+    true
+  end
+
+  def castle_queenside(row)
+    return false if @board.info_at([row, 0], :moven?) || @board.info_at([row, 4], :moven?)
+
+    return false unless find_source([row, 3], @current_player == 'white' ? 'Ra1f1' : 'Ra8f8')
+
+    @board.move_piece([row, 0], [row, 3])
+    @board.move_piece([row, 4], [row, 2])
+
+    @board.info_at([row, 2], :moven?, @moves.length)
+    @board.info_at([row, 3], :moven?, @moves.length)
+
+    true
   end
 end
