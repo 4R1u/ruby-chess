@@ -193,6 +193,25 @@ describe Game, '#move' do
     end
   end
 
+  context 'when putting the king in check with a non-capturing move' do
+    before do
+      # 1. e4 d5 2. e5 Kd7 3. e6+
+      game.move 'e4'
+      game.move 'd5'
+      game.move 'e5'
+      game.move 'Kd7'
+      game.move 'e6+'
+    end
+
+    it 'pawn is at destination' do
+      expect(game.board.board[2][4].piece).to be_a Pawn
+    end
+
+    it 'source is empty' do
+      expect(game.board.board[3][4].piece).to be_nil
+    end
+  end
+
   context 'when trying to move off the board' do
     before do
       game.move '`0'
@@ -678,6 +697,33 @@ describe Game, '#move' do
       it 'destination is empty' do
         expect(game.board.board[2][1].piece).to be_nil
       end
+    end
+  end
+
+  context 'when checking by promoting to queen' do
+    before do
+      # 1. d4 c5 2. dxc5 d5 3. c6 d4 4. c7 d3 5. cxd8R+
+      game.move 'd4'
+      game.move 'c5'
+      game.move 'dxc5'
+      game.move 'd5'
+      game.move 'c6'
+      game.move 'd4'
+      game.move 'c7'
+      game.move 'd3'
+      game.move 'cxd8R+'
+    end
+
+    it 'piece at destination is a rook' do
+      expect(game.board.board[0][3].piece).to be_a Rook
+    end
+
+    it 'piece at destination is white' do
+      expect(game.board.board[0][3].piece.black).to be(false)
+    end
+
+    it 'king is in check' do
+      expect(game).to be_checking
     end
   end
 end
