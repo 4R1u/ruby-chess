@@ -9,64 +9,96 @@ class Pawn < Piece
   end
 
   def self.destination(str, game)
-    gstr = str.sub(' e.p.', '')
-    gstr = gstr.sub('+', '') if gstr[-1] == '+'
-    dst = [8 - gstr[-1].to_i, gstr[-2].ord - 'a'.ord]
-    dst if game.board.valid_coords?(dst) && !game.friend?(dst)
+    i = str.size - 1
+    i -= 1 until ('1'..'8').cover?(str[i]) || i.zero?
+
+    return if i.zero?
+
+    find_destination(str, game, i)
   end
 
   def self.source(dst, str, game)
-    src = find_source(dst, str, game)
-    src if src && game.qualifies?(find_qualifier(str), src, Pawn)
-  end
+    return if dst.nil?
 
-  def self.find_source(dst, str, game)
-    if str.length > 2
-      file_number = str[0].ord - 'a'.ord
-      en_passant_source(dst, file_number, game) ||
-        (capturing_pawn(dst, file_number, game) unless str.include?(' e.p.'))
-    elsif game.board.empty?(dst)
-      source_one_square_behind(dst, game) ||
-        source_two_squares_behind(dst, game)
-    end
+    x = str.size - 1
+    x -= 1 until str[x] == 'x' || x.zero?
+    result = if x.zero?
+               non_capturing_source(dst, game) || capturing_source(dst, str, game)
+             else
+               capturing_source(dst, str, game)
+             end
+    return unless result
+
+    result if valid_promotion?(result, dst, str, game)
   end
 
   class << self
     private
 
-    def source_one_square_behind(dst, game)
+    def find_destination(str, game, index)
+      dst = [8 - str[index].to_i, str[index - 1].ord - 'a'.ord]
+      dst if game.board.valid_coords?(dst) && !game.friend?(dst)
+    end
+
+    def capturing_source(dst, str, game)
+      return ep_source(dst, str, game) if str[-5..] == ' e.p.'
+
+      non_ep_cap_source(dst, str, game) ||
+        ep_source(dst, str, game)
+    end
+
+    def ep_source(dst, str, game)
+      board = game.board
+      src = [dst[0] + game.backwards, str[0].ord - 'a'.ord]
+      removed = [dst[0] + game.backwards, dst[1]]
+      return unless game.board.valid_coords?(src) &&
+                    game.board.valid_coords?(dst) &&
+                    (src[1] - dst[1]).abs == 1 &&
+                    game.friend?(src) && board.pawn?(src) &&
+                    board.pawn?(removed) && game.enemy?(removed) &&
+                    board.info_at(removed, :moven?) == game.moves.length - 1
+
+      board.remove_piece(removed)
+      src
+    end
+
+    def non_ep_cap_source(dst, str, game)
+      src = [dst[0] + game.backwards, str[0].ord - 'a'.ord]
+      src if game.board.valid_coords?(src) && (src[1] - dst[1]).abs == 1 && game.friend?(src) &&
+             game.board.pawn?(src) && game.enemy?(dst)
+    end
+
+    def non_capturing_source(dst, game)
+      return unless game.board.valid_coords?(dst) && game.board.empty?(dst)
+
       src = [dst[0] + game.backwards, dst[1]]
-      src if game.board.pawn?(src) && game.friend?(src)
+      return src if game.board.valid_coords?(src) &&
+                    game.friend?(src) && game.board.empty?(dst) &&
+                    game.board.pawn?(src)
+      return unless game.board.empty?(src)
+
+      non_capturing_source_two_squares_behind(src, game)
     end
 
-    def source_two_squares_behind(dst, game)
-      src = [dst[0] + (2 * game.backwards), dst[1]]
-
-      src if game.board.pawn?(src) && !game.board.info_at(src, :moven?) &&
-             game.friend?(src) && game.board.empty?([src[0] + game.forwards, src[1]])
+    def non_capturing_source_two_squares_behind(src, game)
+      src[0] += game.backwards
+      src if game.board.valid_coords?(src) &&
+             game.friend?(src) && !game.board.info_at(src, :moven?) &&
+             game.board.pawn?(src)
     end
 
-    def capturing_pawn(dst, file_number, game)
-      return unless (0..7).cover?(file_number)
+    def valid_promotion?(src, dst, str, game)
+      # true and false return values indicate whether the move is allowed or not
+      piececlass = str.size - 1
+      piececlass -= 1 until %w[K Q B N R].include?(str[piececlass]) ||
+                            piececlass.zero?
+      return false if piececlass.zero? && [0, 7].include?(dst[0])
+      return true unless [0, 7].include?(dst[0])
 
-      src = [dst[0] + game.backwards, file_number]
-      src if game.board.pawn?(src) && game.friend?(src) &&
-             (dst[1] - file_number).abs == 1 &&
-             game.enemy?(dst)
-    end
-
-    def en_passant_source(dst, file_number, game)
-      src = [dst[0] + game.backwards, file_number]
-      removed = [src[0], dst[1]]
-
-      return unless game.board.valid_coords?(src) && game.board.info_at(removed, :moven?) == game.moves.length - 1 &&
-                    game.board.valid_coords?(dst) && game.enemy?(removed)
-
-      if game.board.pawn?(src) && game.friend?(src) &&
-         (dst[1] - src[1]).abs == 1
-        game.board.remove_piece(removed)
-        src
-      end
+      result = { K: King, Q: Queen, B: Bishop, N: Knight,
+                 R: Rook }[str[piececlass].to_sym].new(black: game.board.board[src[0]][src[1]].piece.black)
+      game.board.place_piece(src, result)
+      true
     end
   end
 end
