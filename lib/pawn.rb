@@ -49,8 +49,8 @@ class Pawn < Piece
 
     def ep_source(dst, str, game)
       board = game.board
-      src = [dst[0] + game.backwards, str[0].ord - 'a'.ord]
-      removed = [dst[0] + game.backwards, dst[1]]
+      src = [dst[0] - game.forwards, str[0].ord - 'a'.ord]
+      removed = [dst[0] - game.forwards, dst[1]]
       return unless game.board.valid_coords?(src) &&
                     game.board.valid_coords?(dst) &&
                     (src[1] - dst[1]).abs == 1 &&
@@ -63,7 +63,7 @@ class Pawn < Piece
     end
 
     def non_ep_cap_source(dst, str, game)
-      src = [dst[0] + game.backwards, str[0].ord - 'a'.ord]
+      src = [dst[0] - game.forwards, str[0].ord - 'a'.ord]
       src if game.board.valid_coords?(src) && (src[1] - dst[1]).abs == 1 && game.friend?(src) &&
              game.board.pawn?(src) && game.enemy?(dst)
     end
@@ -71,7 +71,7 @@ class Pawn < Piece
     def non_capturing_source(dst, game)
       return unless game.board.valid_coords?(dst) && game.board.empty?(dst)
 
-      src = [dst[0] + game.backwards, dst[1]]
+      src = [dst[0] - game.forwards, dst[1]]
       return src if game.board.valid_coords?(src) &&
                     game.friend?(src) && game.board.empty?(dst) &&
                     game.board.pawn?(src)
@@ -81,7 +81,7 @@ class Pawn < Piece
     end
 
     def non_capturing_source_two_squares_behind(src, game)
-      src[0] += game.backwards
+      src[0] -= game.forwards
       src if game.board.valid_coords?(src) &&
              game.friend?(src) && !game.board.info_at(src, :moven?) &&
              game.board.pawn?(src)

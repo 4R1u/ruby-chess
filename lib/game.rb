@@ -79,10 +79,6 @@ class Game
     (@current_player == 'white' ? -1 : 1)
   end
 
-  def backwards
-    (@current_player == 'white' ? 1 : -1)
-  end
-
   def check?
     king_location = find_king
     @current_player = %w[white black].find { |player| player != @current_player }
