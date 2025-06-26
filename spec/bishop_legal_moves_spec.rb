@@ -3,7 +3,7 @@
 require_relative '../lib/game'
 
 describe Bishop, '.legal_moves' do
-  context 'when in the middle' do
+  context 'when moves in all directions are available' do
     it 'has all moves listed' do
       # 1. d4 d5 2. Bf4 e6
       g = Game.new
