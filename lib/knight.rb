@@ -19,4 +19,19 @@ class Knight < Piece
     end
     srcs[1] if srcs.length == 2
   end
+
+  def self.legal_moves(src, game)
+    moves = [[-2, 1], [-1, 2], [1, 2], [2, 1],
+             [2, -1], [1, -2], [-1, -2], [-2, -1]]
+    dsts = []
+    moves.each do |move|
+      dst = [move[0] + src[0], move[1] + src[1]]
+      if game.enemy?(dst)
+        dsts << "N#{(src[1] + 'a'.ord).chr}#{8 - src[0]}x#{(dst[1] + 'a'.ord).chr}#{8 - dst[0]}"
+      elsif game.board.empty?(dst)
+        dsts << "N#{(src[1] + 'a'.ord).chr}#{8 - src[0]}#{(dst[1] + 'a'.ord).chr}#{8 - dst[0]}"
+      end
+    end
+    dsts
+  end
 end
