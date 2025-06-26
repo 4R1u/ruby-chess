@@ -26,6 +26,8 @@ class Knight < Piece
     dsts = []
     moves.each do |move|
       dst = [move[0] + src[0], move[1] + src[1]]
+      next unless game.board.valid_coords?(dst)
+
       if game.enemy?(dst)
         dsts << "N#{(src[1] + 'a'.ord).chr}#{8 - src[0]}x#{(dst[1] + 'a'.ord).chr}#{8 - dst[0]}"
       elsif game.board.empty?(dst)

@@ -16,4 +16,11 @@ describe Knight, '.legal_moves' do
       expect(described_class.legal_moves([3, 3], g)).to eq(%w[Nd5e7 Nd5xf6 Nd5f4 Nd5e3 Nd5b4 Nd5b6 Nd5xc7])
     end
   end
+
+  context 'on the edge of the board' do
+    g = Game.new
+    it 'has only valid moves' do
+      expect(described_class.legal_moves([7, 1], g)).to eq(%w[Nb1c3 Nb1a3])
+    end
+  end
 end
