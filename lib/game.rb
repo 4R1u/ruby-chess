@@ -114,6 +114,17 @@ class Game
     false
   end
 
+  def checkmate?
+    list_of_legal_moves = list_legal_moves
+    list_of_legal_moves.each do |legal_move|
+      virtual_game = Game.new
+      @moves.each { |past_move| virtual_game.move past_move }
+      virtual_game.move legal_move
+      return false if virtual_game.current_player != @current_player
+    end
+    true
+  end
+
   private
 
   def setup_board
@@ -198,5 +209,15 @@ class Game
     @board.info_at([row, 3], :moven?, @moves.length)
 
     true
+  end
+
+  def list_legal_moves
+    list_of_legal_moves = []
+    8.times do |i|
+      8.times do |j|
+        list_of_legal_moves += @board.board[i][j].piece.class.legal_moves([i, j], self) if friend?([i, j])
+      end
+    end
+    list_of_legal_moves
   end
 end
