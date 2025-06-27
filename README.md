@@ -3,6 +3,8 @@
 ## Description
 A two-player command-line chess game in Ruby, with RSpec tests.
 
+![The board shown at the start](resources/start.png)
+
 ## Installation
 You need Ruby and Bundler.
 
@@ -23,7 +25,10 @@ ruby lib/main.rb
 ## Usage
 
 Once you've launched the project, enter moves in [chess notation](https://en.wikipedia.org/wiki/Chess_notation).
+
 One thing to note is that I haven't implemented `++` or `#` for checkmate, the game will detect a game over condition automatically.
+
+Ctrl-C to exit.
 
 The game also declares check automatically, and prohibits illegal moves or those that put you into check.
 
