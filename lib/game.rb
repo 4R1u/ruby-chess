@@ -186,7 +186,7 @@ class Game
   def castle_kingside(row)
     return false if @board.info_at([row, 7], :moven?) || @board.info_at([row, 4], :moven?)
 
-    return false unless find_source([row, 5], @current_player == 'white' ? 'Rh1f1' : 'Rh1f8')
+    return false unless find_source([row, 5], @current_player == 'white' ? 'Rh1f1' : 'Rh8f8')
 
     @board.move_piece([row, 7], [row, 5])
     @board.move_piece([row, 4], [row, 6])
