@@ -58,7 +58,7 @@ class Bishop < Piece
     end
 
     def source_nw(dst, game, qualifier, type)
-      (0..7).each do |offset|
+      (1..7).each do |offset|
         coords = [dst[0] - offset, dst[1] - offset]
         return nil unless game.board.valid_coords?(coords)
         return coords if game.qualifies?(qualifier, coords, type)
