@@ -114,6 +114,17 @@ class Game
     false
   end
 
+  def able_to_move?
+    list_of_legal_moves = list_legal_moves
+    list_of_legal_moves.each do |legal_move|
+      virtual_game = Game.new
+      @moves.each { |past_move| virtual_game.move past_move }
+      virtual_game.move legal_move
+      return true if virtual_game.current_player != @current_player
+    end
+    false
+  end
+
   private
 
   def setup_board
@@ -175,7 +186,7 @@ class Game
   def castle_kingside(row)
     return false if @board.info_at([row, 7], :moven?) || @board.info_at([row, 4], :moven?)
 
-    return false unless find_source([row, 5], @current_player == 'white' ? 'Rh1f1' : 'Rh1f8')
+    return false unless find_source([row, 5], @current_player == 'white' ? 'Rh1f1' : 'Rh8f8')
 
     @board.move_piece([row, 7], [row, 5])
     @board.move_piece([row, 4], [row, 6])
@@ -198,5 +209,15 @@ class Game
     @board.info_at([row, 3], :moven?, @moves.length)
 
     true
+  end
+
+  def list_legal_moves
+    list_of_legal_moves = []
+    8.times do |i|
+      8.times do |j|
+        list_of_legal_moves += @board.board[i][j].piece.class.legal_moves([i, j], self) if friend?([i, j])
+      end
+    end
+    list_of_legal_moves
   end
 end

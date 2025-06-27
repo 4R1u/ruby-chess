@@ -17,43 +17,114 @@ class Bishop < Piece
     uniq[1] if uniq.length == 2
   end
 
-  def self.source_ne(dst, game, qualifier, type)
-    (1..7).each do |offset|
-      coords = [dst[0] - offset, dst[1] + offset]
-      return nil unless game.board.valid_coords?(coords)
-      return coords if game.qualifies?(qualifier, coords, type)
-      return nil unless game.board.empty?(coords)
-    end
-    nil
+  def self.legal_moves(src, game, letter = 'B')
+    legal_moves_ne(src, game, letter) +
+      legal_moves_se(src, game, letter) +
+      legal_moves_sw(src, game, letter) +
+      legal_moves_nw(src, game, letter)
   end
 
-  def self.source_se(dst, game, qualifier, type)
-    (1..7).each do |offset|
-      coords = [dst[0] + offset, dst[1] + offset]
-      return nil unless game.board.valid_coords?(coords)
-      return coords if game.qualifies?(qualifier, coords, type)
-      return nil unless game.board.empty?(coords)
-    end
-    nil
-  end
+  class << self
+    private
 
-  def self.source_sw(dst, game, qualifier, type)
-    (1..7).each do |offset|
-      coords = [dst[0] + offset, dst[1] - offset]
-      return nil unless game.board.valid_coords?(coords)
-      return coords if game.qualifies?(qualifier, coords, type)
-      return nil unless game.board.empty?(coords)
+    def source_ne(dst, game, qualifier, type)
+      (1..7).each do |offset|
+        coords = [dst[0] - offset, dst[1] + offset]
+        return nil unless game.board.valid_coords?(coords)
+        return coords if game.qualifies?(qualifier, coords, type)
+        return nil unless game.board.empty?(coords)
+      end
+      nil
     end
-    nil
-  end
 
-  def self.source_nw(dst, game, qualifier, type)
-    (0..7).each do |offset|
-      coords = [dst[0] - offset, dst[1] - offset]
-      return nil unless game.board.valid_coords?(coords)
-      return coords if game.qualifies?(qualifier, coords, type)
-      return nil unless game.board.empty?(coords)
+    def source_se(dst, game, qualifier, type)
+      (1..7).each do |offset|
+        coords = [dst[0] + offset, dst[1] + offset]
+        return nil unless game.board.valid_coords?(coords)
+        return coords if game.qualifies?(qualifier, coords, type)
+        return nil unless game.board.empty?(coords)
+      end
+      nil
     end
-    nil
+
+    def source_sw(dst, game, qualifier, type)
+      (1..7).each do |offset|
+        coords = [dst[0] + offset, dst[1] - offset]
+        return nil unless game.board.valid_coords?(coords)
+        return coords if game.qualifies?(qualifier, coords, type)
+        return nil unless game.board.empty?(coords)
+      end
+      nil
+    end
+
+    def source_nw(dst, game, qualifier, type)
+      (1..7).each do |offset|
+        coords = [dst[0] - offset, dst[1] - offset]
+        return nil unless game.board.valid_coords?(coords)
+        return coords if game.qualifies?(qualifier, coords, type)
+        return nil unless game.board.empty?(coords)
+      end
+      nil
+    end
+
+    def legal_moves_ne(src, game, letter)
+      result = []
+      (1..7).each do |i|
+        if !game.board.valid_coords?([src[0] - i, src[1] + i])
+          break
+        elsif game.board.empty?([src[0] - i, src[1] + i])
+          result << "#{letter}#{(src[1] + 'a'.ord).chr}#{8 - src[0]}#{(src[1] + i + 'a'.ord).chr}#{8 - src[0] + i}"
+        elsif game.enemy?([src[0] - i, src[1] + i])
+          result << "#{letter}#{(src[1] + 'a'.ord).chr}#{8 - src[0]}x#{(src[1] + i + 'a'.ord).chr}#{8 - src[0] + i}"
+          break
+        end
+      end
+      result
+    end
+
+    def legal_moves_se(src, game, letter)
+      result = []
+      (1..7).each do |i|
+        if !game.board.valid_coords?([src[0] + i, src[1] + i])
+          break
+        elsif game.board.empty?([src[0] + i, src[1] + i])
+          result << "#{letter}#{(src[1] + 'a'.ord).chr}#{8 - src[0]}#{(src[1] + i + 'a'.ord).chr}#{8 - src[0] - i}"
+        elsif game.enemy?([src[0] + i, src[1] + i])
+          result << "#{letter}#{(src[1] + 'a'.ord).chr}#{8 - src[0]}x#{(src[1] + i + 'a'.ord).chr}#{8 - src[0] - i}"
+          break
+        end
+      end
+      result
+    end
+
+    def legal_moves_sw(src, game, letter)
+      result = []
+      (1..7).each do |i|
+        if !game.board.valid_coords?([src[0] + i, src[1] - i])
+          break
+        elsif game.board.empty?([src[0] + i, src[1] - i])
+          result << "#{letter}#{(src[1] + 'a'.ord).chr}#{8 - src[0]}#{(src[1] - i + 'a'.ord).chr}#{8 - src[0] - i}"
+        elsif game.enemy?([src[0] + i, src[1] - i])
+          result << "#{letter}#{(src[1] + 'a'.ord).chr}#{8 - src[0]}x#{(src[1] - i + 'a'.ord).chr}#{8 - src[0] - i}"
+          break
+        end
+      end
+      result
+    end
+
+    def legal_moves_nw(src, game, letter)
+      result = []
+      (1..7).each do |i|
+        if !game.board.valid_coords?([src[0] - i, src[1] - i])
+          break
+        elsif game.board.empty?([src[0] - i, src[1] - i])
+          result << "#{letter}#{(src[1] + 'a'.ord).chr}#{8 - src[0]}#{(src[1] - i + 'a'.ord).chr}#{8 - src[0] + i}"
+        elsif game.enemy?([src[0] - i, src[1] - i])
+          result << "#{letter}#{(src[1] + 'a'.ord).chr}#{8 - src[0]}x#{(src[1] - i + 'a'.ord).chr}#{8 - src[0] + i}"
+          break
+        end
+      end
+      result
+    end
   end
 end

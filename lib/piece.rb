@@ -34,4 +34,8 @@ class Piece
   def self.find_non_rank_qualifier(gstr)
     ('1'..'8').cover?(gstr[2]) ? [8 - gstr[2].to_i, gstr[1].ord - 'a'.ord] : (gstr[1] if ('a'..'h').cover?(gstr[1]))
   end
+
+  def self.legal_moves(_src, _game)
+    []
+  end
 end

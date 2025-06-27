@@ -32,6 +32,13 @@ class Pawn < Piece
     result if valid_promotion?(result, dst, str, game)
   end
 
+  def self.legal_moves(src, game)
+    result = []
+    add_normal_moves(result, src, game)
+    add_cap_moves(result, src, game)
+    add_promotion_moves(result, src, game)
+  end
+
   class << self
     private
 
@@ -90,15 +97,86 @@ class Pawn < Piece
     def valid_promotion?(src, dst, str, game)
       # true and false return values indicate whether the move is allowed or not
       piececlass = str.size - 1
-      piececlass -= 1 until %w[K Q B N R].include?(str[piececlass]) ||
+      piececlass -= 1 until %w[Q B N R].include?(str[piececlass]) ||
                             piececlass.zero?
       return false if piececlass.zero? && [0, 7].include?(dst[0])
       return true unless [0, 7].include?(dst[0])
 
-      result = { K: King, Q: Queen, B: Bishop, N: Knight,
+      result = { Q: Queen, B: Bishop, N: Knight,
                  R: Rook }[str[piececlass].to_sym].new(black: game.board.board[src[0]][src[1]].piece.black)
       game.board.place_piece(src, result)
       true
+    end
+
+    def add_normal_moves(result, src, game)
+      add_two_square_move(result, src, game) if add_one_square_move(result, src, game)
+    end
+
+    def add_cap_moves(result, src, game)
+      add_non_ep_cap_moves(result, src, game)
+      add_ep_moves(result, src, game)
+    end
+
+    def add_promotion_moves(result, src, game)
+      return result unless [0, 7].include?(src[0] + game.forwards)
+
+      result_copy = result.map(&:dup)
+      result = []
+
+      %w[Q B N R].each do |i|
+        result_copy.each do |j|
+          result << (j + i)
+        end
+      end
+      result
+    end
+
+    def add_one_square_move(result, src, game)
+      return result unless game.board.empty?([src[0] + game.forwards, src[1]])
+
+      result << "#{(src[1] + 'a'.ord).chr}#{8 - (src[0] + game.forwards)}"
+    end
+
+    def add_two_square_move(result, src, game)
+      return result unless game.board.empty?([src[0] + (2 * game.forwards),
+                                              src[1]]) && game.board.info_at(src, :moven?).nil? && game.board.pawn?(src)
+
+      result << "#{(src[1] + 'a'.ord).chr}#{8 - (src[0] + (2 * game.forwards))}"
+    end
+
+    def add_non_ep_cap_moves(result, src, game)
+      if game.board.valid_coords?([src[0] + game.forwards,
+                                   src[1] - 1]) && game.enemy?([src[0] + game.forwards, src[1] - 1])
+        result << "#{(src[1] + 'a'.ord).chr}x#{(src[1] - 1 + 'a'.ord).chr}#{8 - (src[0] + game.forwards)}"
+      end
+
+      if game.board.valid_coords?([src[0] + game.forwards,
+                                   src[1] + 1]) && game.enemy?([src[0] + game.forwards, src[1] + 1])
+        result << "#{(src[1] + 'a'.ord).chr}x#{(src[1] + 1 + 'a'.ord).chr}#{8 - (src[0] + game.forwards)}"
+      end
+    end
+
+    def add_ep_moves(result, src, game)
+      board = game.board
+      dst = [src[0] + game.forwards, src[1] - 1]
+      removed = [src[0], dst[1]]
+      if game.board.valid_coords?(src) &&
+         game.board.valid_coords?(dst) &&
+         game.friend?(src) && board.pawn?(src) &&
+         board.pawn?(removed) && game.enemy?(removed) &&
+         board.info_at(removed, :moven?) == game.moves.length - 1
+        result << "#{(src[1] + 'a'.ord).chr}x#{(dst[1] + 'a'.ord).chr}#{8 - (dst[0])}"
+      end
+
+      dst = [src[0] + game.forwards, src[1] + 1]
+      removed = [src[0], dst[1]]
+      if game.board.valid_coords?(src) &&
+         game.board.valid_coords?(dst) &&
+         game.friend?(src) && board.pawn?(src) &&
+         board.pawn?(removed) && game.enemy?(removed) &&
+         board.info_at(removed, :moven?) == game.moves.length - 1
+        result << "#{(src[1] + 'a'.ord).chr}x#{(dst[1] + 'a'.ord).chr}#{8 - (dst[0])}"
+      end
     end
   end
 end

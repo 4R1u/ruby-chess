@@ -15,4 +15,8 @@ class Queen < Piece
             Rook.source(dst, str, game, Queen)].uniq
     uniq[1] if uniq.length == 2
   end
+
+  def self.legal_moves(src, game)
+    Bishop.legal_moves(src, game, 'Q') + Rook.legal_moves(src, game, 'Q')
+  end
 end
