@@ -2,12 +2,12 @@
 
 require_relative '../lib/game'
 
-describe Game, '#check?' do
+describe Game, '#able_to_move?' do
   subject(:game) { described_class.new }
 
   context 'when there is no checkmate' do
-    it 'returns false' do
-      expect(game.checkmate?).to be(false)
+    it 'returns true' do
+      expect(game.able_to_move?).to be(true)
     end
   end
 
@@ -17,8 +17,8 @@ describe Game, '#check?' do
       game_moves.each { |i| game.move i }
     end
 
-    it 'returns true' do
-      expect(game.checkmate?).to be(true)
+    it 'returns false' do
+      expect(game.able_to_move?).to be(false)
     end
   end
 end

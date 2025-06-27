@@ -114,15 +114,15 @@ class Game
     false
   end
 
-  def checkmate?
+  def able_to_move?
     list_of_legal_moves = list_legal_moves
     list_of_legal_moves.each do |legal_move|
       virtual_game = Game.new
       @moves.each { |past_move| virtual_game.move past_move }
       virtual_game.move legal_move
-      return false if virtual_game.current_player != @current_player
+      return true if virtual_game.current_player != @current_player
     end
-    true
+    false
   end
 
   private
